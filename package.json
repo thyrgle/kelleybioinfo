@@ -1,0 +1,23 @@
+{
+  "name": "kelleybioinfo",
+  "version": "0.0.1",
+  "description": "Rewrite of kelleybioinfo.org",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thyrgle/kelleybioinfo.git"
+  },
+  "keywords": [
+    "biology",
+    "education"
+  ],
+  "author": "Christopher Sumnicht",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thyrgle/kelleybioinfo/issues"
+  },
+  "homepage": "https://github.com/thyrgle/kelleybioinfo#readme"
+}
