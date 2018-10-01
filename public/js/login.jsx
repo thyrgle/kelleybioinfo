@@ -1,6 +1,6 @@
 import React from 'react';
 
-class LogIn extends React.Component {
+class LoginHandler extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -11,12 +11,10 @@ class LogIn extends React.Component {
   render() {
     return (
       <div>
-        <input type="text" name="username" id="username"/>
-        <input type="text" name="password" id="password"/>
-        <button className="login" onclick={this.onLogin}>
-          Log In
-        </button>
+        <p> HELLO ! </p>
       </div>
     )
   }
 }
+
+export default LoginHandler;
