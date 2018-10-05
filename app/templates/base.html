@@ -1,15 +1,24 @@
 <!doctype html>
 <title>{% block title %}{% endblock %}</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-<nav>
-  <h1>Kelley Bio Info</h1>
-  <ul>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Kelley Bio Info</a>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto"> 
     {% if g.user %}
-      <li><span>{{ g.user['username'] }}</span>
-      <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
+      <li class="nav-item active">
+	<a class="nav-link" href="profile.html">{{ g.user['username'] }}</a>
+      </li>
+      <li class="nav-item active">
+	<a href="{{ url_for('auth.logout') }}">Log Out</a>
+      </li>
     {% else %}
-      <li><a href="{{ url_for('auth.register') }}">Register</a>
-      <li><a href="{{ url_for('auth.login') }}">Log In</a>
+      <li class="nav-item active">
+        <a href="{{ url_for('auth.register') }}">Register</a>
+      </li>
+      <li class="nav-item active">
+        <a href="{{ url_for('auth.login') }}">Log In</a>
+      </li>
     {% endif %}
   </ul>
 </nav>
@@ -22,3 +31,4 @@
   {% endfor %}
   {% block content %}{% endblock %}
 </section>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>

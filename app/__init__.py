@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, render_template
 
 
 def create_app(test_config=None):
@@ -19,9 +19,9 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    @app.route('/hello')
+    @app.route('/')
     def hello():
-        return 'Hello, World!'
+        return render_template('main/main.html')
 
     # Initialize database.
     from . import db
@@ -34,5 +34,7 @@ def create_app(test_config=None):
     # Initialize user profile.
     from . import profile
     app.register_blueprint(profile.bp)
+
+    app.add_url_rule('/', endpoint='index')
 
     return app
