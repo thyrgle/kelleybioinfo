@@ -4,11 +4,11 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <body class="container-fluid d-flex flex-column">
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Kelley Bio Info</a>
+    <a class="navbar-brand" href="/">Kelley Bio Info</a>
     <ul class="navbar-nav ml-auto">
       {% if g.user %}
         <li class="nav-item">
-          <a class="nav-link" href="profile.html">{{ g.user['username'] }}</a>
+	  <a class="nav-link" href="profile/{{ g.user['id'] }}">{{ g.user['username'] }}</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('auth.logout') }}">Log Out</a>
