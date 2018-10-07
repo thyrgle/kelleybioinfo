@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <body class="container-fluid d-flex flex-column">
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-expand-lg navbar-inverse bg-dark">
     <a class="navbar-brand" href="/">Kelley Bio Info</a>
     <ul class="navbar-nav ml-auto">
       {% if g.user %}
@@ -15,10 +15,10 @@
         </li>
       {% else %}
       <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('auth.register') }}">Register</a>
+        <a class="nav-link" href="{{ url_for('auth.login') }}">Log In</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('auth.login') }}">Log In</a>
+        <a class="btn btn-light" href="{{ url_for('auth.register') }}">Register</a>
       </li>
       {% endif %}
     </ul>

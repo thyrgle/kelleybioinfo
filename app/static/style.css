@@ -8,28 +8,72 @@ body {
   width: 100%;
 }
 
+.nav-link {
+  color: #fff;
+}
+
+.navbar-brand {
+  color: #fff;
+}
+
 #alignment-item {
-  background: #248dd3;
+  color: #fff;
+  background: #d05353;
+  border: 2px;
+  margin-left: 20px;
+  margin-top: 20px;
+  margin-right: 10px;
+  margin-bottom: 10px;
 }
 
 #protein-item {
-  background: #65d398;
+  color: #fff;
+  background: #d05353;
+  border: 2px;
+  margin-left: 10px;
+  margin-top: 20px;
+  margin-right: 10px;
+  margin-bottom: 10px;
 }
 
 #motifs-item {
-  background: #ea8fc4;
+  color: #fff;
+  background: #d05353;
+  border: 2px;
+  margin-left: 10px;
+  margin-top: 20px;
+  margin-right: 20px;
+  margin-bottom: 10px;
 }
 
 #rna-item {
-  background: #5a8c94;
+  color: #fff;
+  background: #d05353;
+  border: 2px;
+  margin-left: 20px;
+  margin-top: 10px;
+  margin-right: 10px;
+  margin-bottom: 20px;
 }
 
 #phylogeny-item {
-  background: #5a8fe9;
+  color: #fff;
+  background: #d05353;
+  border: 2px;
+  margin-left: 10px;
+  margin-top: 10px;
+  margin-right: 10px;
+  margin-bottom: 20px;
 }
 
 #probability-item {
-  background: #49a0a0;
+  color: #fff;
+  background: #d05353;
+  border: 2px;
+  margin-left: 10px;
+  margin-top: 10px;
+  margin-right: 20px;
+  margin-bottom: 20px;
 }
 
 .container-fluid {
