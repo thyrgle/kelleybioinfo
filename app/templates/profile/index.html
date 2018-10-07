@@ -1,9 +1,13 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}{{ info['name'] }}{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
-  <p>{{ info[1] }}</p>
+  <div class="row profile-row">
+    <div class="col" id="profile-image">
+    </div>
+    <div class="col-9" id="graph-holder">
+    </div>
+  </div>
 {% endblock %}

@@ -28,7 +28,7 @@ body {
 
 #protein-item {
   color: #fff;
-  background: #d05353;
+  background: #2d7dd2;
   border: 2px;
   margin-left: 10px;
   margin-top: 20px;
@@ -38,7 +38,7 @@ body {
 
 #motifs-item {
   color: #fff;
-  background: #d05353;
+  background: #7ca704;
   border: 2px;
   margin-left: 10px;
   margin-top: 20px;
@@ -48,7 +48,7 @@ body {
 
 #rna-item {
   color: #fff;
-  background: #d05353;
+  background: #95405a;
   border: 2px;
   margin-left: 20px;
   margin-top: 10px;
@@ -58,7 +58,7 @@ body {
 
 #phylogeny-item {
   color: #fff;
-  background: #d05353;
+  background: #eeb902;
   border: 2px;
   margin-left: 10px;
   margin-top: 10px;
@@ -68,7 +68,7 @@ body {
 
 #probability-item {
   color: #fff;
-  background: #d05353;
+  background: #30343f;
   border: 2px;
   margin-left: 10px;
   margin-top: 10px;
@@ -83,4 +83,24 @@ body {
 .main-row {
   margin-right: 0px !important;
   margin-left: 0px !important;
+}
+
+.profile-row {
+  margin-right: 0px !important;
+  margin-left: 0px !important;
+}
+
+#profile-image {
+  min-height: 300px;
+  background: #d05353;
+  margin-right: 10px;
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+#graph-holder {
+  background: #2d7dd2; 
+  margin-left: 10px;
+  margin-top: 20px;
+  margin-right: 20px;
 }
