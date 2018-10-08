@@ -8,6 +8,11 @@ body {
   width: 100%;
 }
 
+a, a:hover, a:active, a:visited {
+  color: #fff;
+  text-decoration: none;
+}
+
 .nav-link {
   color: #fff;
 }
@@ -80,12 +85,7 @@ body {
   padding: 0px;
 }
 
-.main-row {
-  margin-right: 0px !important;
-  margin-left: 0px !important;
-}
-
-.profile-row {
+.row {
   margin-right: 0px !important;
   margin-left: 0px !important;
 }
@@ -96,6 +96,7 @@ body {
   margin-right: 10px;
   margin-top: 20px;
   margin-left: 20px;
+  margin-bottom: 10px;
 }
 
 #graph-holder {
@@ -103,4 +104,21 @@ body {
   margin-left: 10px;
   margin-top: 20px;
   margin-right: 20px;
+  margin-bottom: 10px;
+}
+
+#spider-plot {
+  background: #95405a; 
+  margin-left: 20px;
+  margin-right: 10px;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+#detailed-view {
+  background: #7ca704;
+  margin-left: 10px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  margin-top: 10px;
 }
