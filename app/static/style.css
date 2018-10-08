@@ -122,3 +122,15 @@ a, a:hover, a:active, a:visited {
   margin-bottom: 20px;
   margin-top: 10px;
 }
+
+#login-title {
+  color: #fff;
+}
+
+#login-title-div {
+  margin-top: 20px;
+}
+
+.auth-main {
+  background: #2d7dd2;
+}
