@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-3">
+    </div>
+    <!-- Refactor CSS! -->
+    <div class="col auth-main" id="login-title">
+      {% block auth-header %}
+    </div>
+    <div class="col-3">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-3">
+    </div>
+    <div class="col-6 auth-main">
+      {% block auth-forms %}
+    </div>
+    <div class="col-3">
+    </div>
+  </div>
+{% endblock %}

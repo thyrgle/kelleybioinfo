@@ -20,7 +20,7 @@ def create_app(test_config=None):
         pass
 
     @app.route('/')
-    def hello():
+    def index():
         return render_template('main/main.html')
 
     # Initialize database.
@@ -34,6 +34,10 @@ def create_app(test_config=None):
     # Initialize user profile.
     from . import profile
     app.register_blueprint(profile.bp)
+
+    # Initialize problems.
+    from . import problems
+    app.register_blueprint(problems.bp)
 
     app.add_url_rule('/', endpoint='index')
 
