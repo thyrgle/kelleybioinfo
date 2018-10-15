@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="row">
+<div class="row" id="problem-row">
   <div class="col-2">
     <ul class="nav flex-column">
       <li class="nav-item">
@@ -24,17 +24,19 @@
       </li>
     </ul>
   </div>
-  <div class="col-2">
+  <div class="col-2 d-flex align-items-center justify-content-center">
+    <button type="button" class="btn btn-primary">◀</button>
   </div>
   <div class="col">
   </div>
-  <div class="col-2">
+  <div class="col-2 d-flex align-items-center justify-content-center">
+    <button type="button" class="btn btn-primary">▶</button>
   </div>
 </div>
 <div class="row">
   <div class="col-4">
   </div>
-  <div class="col">
+  <div class="col d-flex justify-content-end">
     <button type="button" class="btn btn-primary">Submit</button>
     <div class="btn-group btn-group-toggle" data-toggle="buttons">
       <label class="btn btn-secondary active">

@@ -134,3 +134,7 @@ a, a:hover, a:active, a:visited {
 .auth-main {
   background: #2d7dd2;
 }
+
+#problem-row {
+  min-height: 500px;
+}
