@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="row">
-  <div class="col-3">
+  <div class="col-2">
     <ul class="nav flex-column">
       <li class="nav-item">
         <h3>Alignment</h3>
@@ -24,7 +24,37 @@
       </li>
     </ul>
   </div>
+  <div class="col-2">
+  </div>
   <div class="col">
+  </div>
+  <div class="col-2">
+  </div>
+</div>
+<div class="row">
+  <div class="col-4">
+  </div>
+  <div class="col">
+    <button type="button" class="btn btn-primary">Submit</button>
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+      <label class="btn btn-secondary active">
+        <input type="radio" 
+	       name="options" 
+	       id="quiz" 
+	       autocomplete="off" 
+	       checked>
+	  Quiz
+      </label>
+      <label class="btn btn-secondary">
+        <input type="radio" 
+	       name="options"
+               id="practice"
+	       autocomplete="off">
+          Practice
+      </label>
+    </div>
+  </div>
+  <div class="col-2">
   </div>
 </div>
 {% endblock %}
