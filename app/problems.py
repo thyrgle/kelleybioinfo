@@ -4,6 +4,7 @@ from flask import (
     g,
     redirect,
     render_template,
+    session,
     request,
     url_for
 )
@@ -42,3 +43,16 @@ def phylogeny():
 @bp.route('/probability.html')
 def probability():
     return render_template('problems/probability.html')
+
+@bp.route('test.html', methods=('GET',))
+def test():
+    db = get_db()
+    user_id = session.get('user_id')
+    db.execute(
+        '''
+        UPDATE user 
+        SET points = points + 10
+        WHERE id = ?''', (user_id,)
+    )
+    db.commit()
+    return render_template('problems/test.html')
