@@ -21,4 +21,8 @@ def index(user_id):
         'SELECT * FROM user WHERE id = ?',
         (user_id,)
     )
+    reputation = db.execute(
+        'SELECT * FROM history where id = ?',
+        (user_id,)
+    )
     return render_template('profile/index.html', info=list(info.fetchone()))

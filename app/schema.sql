@@ -11,5 +11,5 @@ CREATE TABLE user (
 CREATE TABLE history (
   id INTEGER,
   award INTEGER,
-  time_stamp INTEGER
+  time_stamp TEXT
 );
