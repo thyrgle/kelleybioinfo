@@ -1,13 +1,18 @@
 import os
 from flask import Flask, render_template
-
+from flask_sqlalchemy import SQLAlchemy
 
 def create_app(test_config=None):
+    # TODO Avoid global
     app = Flask(__name__, instance_relative_config=True)
-    app.config.from_mapping(
-        SECRET_KEY='dev',
-        DATABASE=os.path.join(app.instance_path, 'app.sqlite'),
-    )
+    # TODO Secret key?
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
+    app.secret_key = 'dev'
+
+    from . import models
+    with app.app_context(): 
+        models.db.init_app(app)
+        models.db.create_all()
 
     if test_config is None:
         app.config.from_pyfile('config.py', silent=True)
@@ -22,10 +27,6 @@ def create_app(test_config=None):
     @app.route('/')
     def index():
         return render_template('main/main.html')
-
-    # Initialize database.
-    from . import db
-    db.init_app(app)
 
     # Initialize authentication blueprint.
     from . import auth

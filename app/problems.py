@@ -10,8 +10,8 @@ from flask import (
 )
 from werkzeug.exceptions import abort
 from app.auth import login_required
-from app.db import get_db
 from datetime import datetime
+from . import models
 
 bp = Blueprint('problems', __name__, url_prefix='/problems')
 
@@ -47,17 +47,13 @@ def probability():
 
 @bp.route('test.html', methods=('GET',))
 def test():
-    db = get_db()
     user_id = session.get('user_id')
-    db.execute(
-        '''
-        UPDATE user 
-        SET points = points + 10
-        WHERE id = ?''', (user_id,)
-    )
-    db.commit()
-    db.execute('INSERT INTO history (id, award, time_stamp) VALUES (?, ?, ?)',
-                (user_id, 10, datetime.today().strftime('%Y-%m-%d'))
-              )
-    db.commit()
+    cur_user = models.User.query.filter_by(id=user_id)
+    cur_user.points += 10
+    # TODO use default values.
+    models.db.session.add(models.History(
+        id=user_id, 
+        award=10,
+        time_stamp=datetime.today().strftime('%Y-%m-%d')))
+    models.db.session.commit()
     return render_template('problems/test.html')
