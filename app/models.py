@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func
 
 
 db = SQLAlchemy()
@@ -18,7 +19,9 @@ class History(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     award = db.Column(db.Integer)
     # TODO Check approrpriate stirng size.
-    time_stamp = db.Column(db.String(80))
+    time_stamp = db.Column(db.DateTime(timezone=True),
+                                       server_default=func.now(),
+                                       nullable=False)
 
     def __repr__(self):
         return '<%r awarded to %r at %r', (award, id, time_stamp)
