@@ -48,10 +48,10 @@ def probability():
 @bp.route('test.html', methods=('GET',))
 def test():
     user_id = session.get('user_id')
-    cur_user = models.User.query.filter_by(id=user_id)
+    cur_user = models.User.query.filter_by(user_id=user_id)
     # TODO use default values.
     models.db.session.add(models.History(
-        id=user_id, 
-        award=10))
+        user_id=user_id, 
+        value=10))
     models.db.session.commit()
     return render_template('problems/test.html')
