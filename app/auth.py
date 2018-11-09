@@ -36,7 +36,7 @@ def load_logged_in_user():
     if user_id is None:
         g.user = None
     else:
-        g.user = models.User.query.filter_by(id=user_id).first()
+        g.user = models.User.query.filter_by(user_id=user_id).first()
 
 
 @bp.route('/register', methods=('GET', 'POST'))
@@ -79,7 +79,7 @@ def login():
 
         if error is None:
             session.clear()
-            session['user_id'] = user.id
+            session['user_id'] = user.user_id
             return redirect(url_for('index'))
 
         flash(error)
