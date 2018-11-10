@@ -22,7 +22,8 @@ def index(user_id):
     total_rep = models.History.query.with_entities(
             func.sum(models.History.value)
         ).filter_by(user_id=user_id).first()[0]
-    name = "TODO"
+    name = models.User.query.filter_by(user_id=user_id).first()
+    print(name)
     return render_template('profile/index.html', 
                             total_rep=total_rep,
                             name=name)
