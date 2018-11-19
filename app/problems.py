@@ -1,17 +1,10 @@
 from flask import (
     Blueprint,
-    flash,
-    g,
-    redirect,
     render_template,
     session,
-    request,
-    url_for
 )
-from werkzeug.exceptions import abort
-from app.auth import login_required
-from datetime import datetime
 from . import models
+
 
 bp = Blueprint('problems', __name__, url_prefix='/problems')
 
@@ -45,13 +38,13 @@ def phylogeny():
 def probability():
     return render_template('problems/probability.html')
 
+
 @bp.route('test.html', methods=('GET',))
 def test():
     user_id = session.get('user_id')
-    cur_user = models.User.query.filter_by(user_id=user_id)
     # TODO use default values.
     models.db.session.add(models.History(
-        user_id=user_id, 
+        user_id=user_id,
         value=10))
     models.db.session.commit()
     return render_template('problems/test.html')

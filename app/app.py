@@ -1,6 +1,6 @@
 import os
 from flask import Flask, render_template
-from flask_sqlalchemy import SQLAlchemy
+
 
 def create_app(test_config=None):
     # TODO Avoid global
@@ -10,7 +10,7 @@ def create_app(test_config=None):
     app.secret_key = 'dev'
 
     from . import models
-    with app.app_context(): 
+    with app.app_context():
         models.db.init_app(app)
         models.db.create_all()
 

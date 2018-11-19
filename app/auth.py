@@ -1,6 +1,6 @@
 import functools
 from flask import (
-    Blueprint, 
+    Blueprint,
     flash,
     g,
     redirect,
@@ -20,7 +20,7 @@ bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 
 def login_required(view):
-    @functool.wraps(view)
+    @functools.wraps(view)
     def wrapped_view(**kwargs):
         if g.user is None:
             return redirect(url_for('auth.login'))
