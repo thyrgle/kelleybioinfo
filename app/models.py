@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
+import time
 
 
 db = SQLAlchemy()
@@ -15,6 +16,7 @@ class User(db.Model):
         # TODO make more descriptive.
         return '<User %r' % self.username
 
+
 class History(db.Model):
     award_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, nullable=False)
@@ -24,5 +26,16 @@ class History(db.Model):
                                        server_default=func.now(),
                                        nullable=False)
 
+    @property
+    def as_javascript(self):
+        return { 'award_id'   : self.award_id,
+                 'user_id'    : self.user_id,
+                 'value'      : self.value,
+                 # Convert the datetime object to a string that Javascript can
+                 # use.
+                 # See https://stackoverflow.com/a/14469780/667648
+                 'time_stamp' : int(time.mktime(self.time_stamp.timetuple())) * 1000
+               }
+
     def __repr__(self):
-        return '<%r awarded to %r at %r', (award, id, time_stamp)
+        return '<%r awarded to %r at %r' % (self.value, self.user_id, self.time_stamp)

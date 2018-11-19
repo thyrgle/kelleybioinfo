@@ -23,7 +23,9 @@ def index(user_id):
             func.sum(models.History.value)
         ).filter_by(user_id=user_id).first()[0]
     name = models.User.query.filter_by(user_id=user_id).first()
-    print(name)
-    return render_template('profile/index.html', 
+    history = models.History.query.filter_by(user_id=user_id)
+    history = [item.as_javascript for item in history.all()]
+    return render_template('profile/index.html',
                             total_rep=total_rep,
+                            history=history,
                             name=name)
