@@ -4,25 +4,18 @@
 <div class="row" id="problem-row">
   <div class="col-2">
     <ul class="nav flex-column">
-      <li class="nav-item">
-        <h3>Alignment</h3>
-      </li>
-      <li class="nav-item">
-        <h3>Protein</h3>
-      </li>
-      <li class="nav-item">
-        <h3>Motifs</h2>
-      </li>
-      <li class="nav-item">
-	<h3>RNA</h2>
-      </li>
-      <li class="nav-item">
-        <h3>Phylogeny</h3>
-      </li>
-      <li class="nav-item">
-        <h3>Probability</h3>
-      </li>
-    </ul>
+      {% for category in categories %}
+        <li class="nav-item">
+	  <p><b>{{ category }}</b></p>
+	  <ul class="nav flex-column">
+	    {% for problem in categories[category] %}
+	      <li class="nav-item">
+	        {{ problem }}
+	      </li>
+	     {% endfor %}
+	  </ul>
+        </li>
+      {% endfor %}
   </div>
   <div class="col-2 d-flex align-items-center justify-content-center">
     <button type="button" class="btn btn-primary">◀</button>

@@ -38,6 +38,7 @@ def create_app(test_config=None):
 
     # Initialize problems.
     from . import problems
+    problems.load_problems()
     app.register_blueprint(problems.bp)
 
     app.add_url_rule('/', endpoint='index')

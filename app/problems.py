@@ -1,3 +1,5 @@
+import importlib
+import os
 from flask import (
     Blueprint,
     render_template,
@@ -5,38 +7,52 @@ from flask import (
 )
 from . import models
 
-
 bp = Blueprint('problems', __name__, url_prefix='/problems')
+
+categories = {
+    'Alignment': [],
+    'Protein': [],
+    'RNA': [],
+    'Probability': [],
+    'Motifs': [],
+    'Phylogeny': [],
+}
 
 
 @bp.route('/alignment.html')
 def alignment():
-    return render_template('problems/alignment.html')
+    return render_template('problems/alignment.html',
+                           categories=categories)
 
 
 @bp.route('/protein.html')
 def protein():
-    return render_template('problems/protein.html')
+    return render_template('problems/protein.html',
+                           categories=categories)
 
 
 @bp.route('/motifs.html')
 def motifs():
-    return render_template('problems/motifs.html')
+    return render_template('problems/motifs.html',
+                           categories=categories)
 
 
 @bp.route('/rna.html')
 def rna():
-    return render_template('problems/rna.html')
+    return render_template('problems/rna.html',
+                           categories=categories)
 
 
 @bp.route('/phylogeny.html')
 def phylogeny():
-    return render_template('problems/phylogeny.html')
+    return render_template('problems/phylogeny.html',
+                           categories=categories)
 
 
 @bp.route('/probability.html')
 def probability():
-    return render_template('problems/probability.html')
+    return render_template('problems/probability.html',
+                           categories=categories)
 
 
 @bp.route('test.html', methods=('GET',))
@@ -48,3 +64,14 @@ def test():
         value=10))
     models.db.session.commit()
     return render_template('problems/test.html')
+
+
+def load_problems():
+    for f in os.listdir('./app/problem_collection'):
+        no_ext = f.rsplit('.', 1)[0]
+        spec = importlib.util.spec_from_file_location(no_ext,
+                                                      'app/problem_collection/'
+                                                      + f)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        categories[module.CATEGORY].append(module.NAME)
