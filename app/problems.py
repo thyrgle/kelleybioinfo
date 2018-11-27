@@ -1,4 +1,5 @@
 import importlib
+import functools
 import os
 from flask import (
     Blueprint,
@@ -7,7 +8,10 @@ from flask import (
 )
 from . import models
 
-bp = Blueprint('problems', __name__, url_prefix='/problems')
+bp = Blueprint('problems',
+               __name__,
+               url_prefix='/problems',
+               template_folder='templates/')
 
 categories = {
     'Alignment': [],
@@ -17,6 +21,9 @@ categories = {
     'Motifs': [],
     'Phylogeny': [],
 }
+
+
+render_problem = functools.partial(render_template, categories=categories)
 
 
 @bp.route('/alignment.html')
@@ -75,3 +82,7 @@ def load_problems():
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
         categories[module.CATEGORY].append(module.NAME)
+        print(module.CATEGORY + '/' + module.URL)
+        bp.add_url_rule(module.CATEGORY + '/' + module.URL,
+                        module.URL.rsplit('.', 1)[0],
+                        module.content)
