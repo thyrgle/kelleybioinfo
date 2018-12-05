@@ -1,8 +1,13 @@
+from flask import request
 from app import problems
 
 NAME = "Needleman-Wunsch Algorithm"
 CATEGORY = "RNA"
 URL = "needlemanwunsch.html"
+
+
+def validate(solution):
+    pass
 
 
 def compute_block(result, i, j, first_seq, second_seq):
@@ -15,7 +20,7 @@ def calc_weight(first_char, second_char):
     if first_char == second_char:
         return 1
     else:
-        return -1
+        return 0
 
 
 def generate_problem_data(first_seq, second_seq):
@@ -32,8 +37,6 @@ def generate_problem_data(first_seq, second_seq):
             result[i][j] = compute_block(result, i, j,
                                          ' ' + second_seq,
                                          ' ' + first_seq)
-            if i == 1 and j == 1:
-                print("{0},{1},{2}".format(i, j, result[i][j]))
     for index, letter in enumerate(second_seq):
         result[index + 1].insert(0, letter)
     result[0].insert(0, ' ')
@@ -44,6 +47,8 @@ def generate_problem_data(first_seq, second_seq):
 def content():
     first_seq = "GCATGCU"
     second_seq = "GATTACA"
+    if request.method == 'POST':
+        validate(request.data)
     return problems.render_problem('problems/needlemanwunsch.html',
                                    matrix=generate_problem_data(first_seq,
                                                                 second_seq),

@@ -1,6 +1,10 @@
+import time
+import json
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
-import time
+from werkzeug.security import (
+    generate_password_hash
+)
 
 
 db = SQLAlchemy()
@@ -23,19 +27,37 @@ class History(db.Model):
     value = db.Column(db.Integer)
     # TODO Check approrpriate stirng size.
     time_stamp = db.Column(db.DateTime(timezone=True),
-                                       server_default=func.now(),
-                                       nullable=False)
+                           server_default=func.now(),
+                           nullable=False)
 
     @property
     def as_javascript(self):
-        return { 'award_id'   : self.award_id,
-                 'user_id'    : self.user_id,
-                 'value'      : self.value,
-                 # Convert the datetime object to a string that Javascript can
-                 # use.
-                 # See https://stackoverflow.com/a/14469780/667648
-                 'time_stamp' : int(time.mktime(self.time_stamp.timetuple())) * 1000
-               }
+        return {'award_id': self.award_id,
+                'user_id': self.user_id,
+                'value': self.value,
+                # Convert the datetime object to a string that Javascript can
+                # use.
+                # See https://stackoverflow.com/a/14469780/667648
+                'time_stamp': int(time.mktime(self.time_stamp.timetuple())) * 1000 }
 
     def __repr__(self):
-        return '<%r awarded to %r at %r' % (self.value, self.user_id, self.time_stamp)
+        return '<%r awarded to %r at %r' % (
+                self.value,
+                self.user_id,
+                self.time_stamp)
+
+
+class Problem(db.Model):
+    user = db.Column(db.Integer, primary_key=True)
+    data = db.Column(db.String(200), nullable=False)
+    problem_type = db.Column(db.String(40), nullable=False)
+
+
+def add_problem(data, user, problem_type):
+    """Helper function to add problem to database, mostly used to assist in a-
+    bstracting away the need to generate a hash for the problem.
+    """
+    db.session.add(Problem(user=user,
+                           data=json.dumps(data),
+                           problem_type=problem_type))
+    db.session.commit()

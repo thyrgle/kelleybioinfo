@@ -1,4 +1,5 @@
 import importlib
+import json
 import functools
 import os
 from flask import (
@@ -7,6 +8,7 @@ from flask import (
     session,
 )
 from . import models
+
 
 bp = Blueprint('problems',
                __name__,
@@ -73,6 +75,28 @@ def test():
     return render_template('problems/test.html')
 
 
+def make_safe(func, url):
+    """
+    Decorator for determining whether the submit problem has not been user ta-
+    mpered.
+
+    Paramters:
+    func :  Function used to check the correctness of a solution.
+    """
+    def validated_func():
+        user_id = session.get('user_id')
+        existing_problem = models.Problem.query.filter_by(user=user_id,
+                                                          problem_type=url).first()
+        if existing_problem:
+            data = json.loads(existing_problem.data)
+        else:
+            data = func()
+            models.add_problem(data, user_id, url)
+        return data
+
+    return validated_func
+
+
 def load_problems():
     for f in os.listdir('./app/problem_collection'):
         no_ext = f.rsplit('.', 1)[0]
@@ -85,4 +109,5 @@ def load_problems():
         print(module.CATEGORY + '/' + module.URL)
         bp.add_url_rule(module.CATEGORY + '/' + module.URL,
                         module.URL.rsplit('.', 1)[0],
-                        module.content)
+                        make_safe(module.content, module.URL),
+                        methods=('GET', 'POST'))
