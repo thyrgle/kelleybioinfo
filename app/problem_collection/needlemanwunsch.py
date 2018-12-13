@@ -1,3 +1,4 @@
+import random
 from flask import request
 from app import problems
 
@@ -11,7 +12,8 @@ def validate(solution):
 
 
 def compute_block(result, i, j, first_seq, second_seq):
-    return max(result[i-1][j-1] + calc_weight(first_seq[i], second_seq[j]),
+    print("len1: {}, len2: {}".format(len(first_seq), len(second_seq)))
+    return max(result[i-1][j-1] + calc_weight(second_seq[i], first_seq[j]),
                result[i-1][j] - 1,
                result[i][j-1] - 1)
 
@@ -20,7 +22,7 @@ def calc_weight(first_char, second_char):
     if first_char == second_char:
         return 1
     else:
-        return 0
+        return -1
 
 
 def generate_problem_data(first_seq, second_seq):
@@ -28,15 +30,16 @@ def generate_problem_data(first_seq, second_seq):
     # Initialize the resulting matrix with the initial row.
     result = [list(range(0, -len(first_seq) - 1, -1))]
     # Create initial columns.
-    for i in range(-1, -len(first_seq) - 1, -1):
+    for i in range(-1, -len(second_seq) - 1, -1):
         row = [i]
-        row.extend([0]*len(second_seq))
+        row.extend([0]*len(first_seq))
         result.append(row)
-    for i in range(1, len(second_seq) + 1):
-        for j in range(1, len(first_seq) + 1):
+    print(result)
+    for i in range(1, len(result) - 1):
+        for j in range(1, len(result[0])):
             result[i][j] = compute_block(result, i, j,
-                                         ' ' + second_seq,
-                                         ' ' + first_seq)
+                                         ' ' + first_seq,
+                                         ' ' + second_seq)
     for index, letter in enumerate(second_seq):
         result[index + 1].insert(0, letter)
     result[0].insert(0, ' ')
@@ -44,9 +47,31 @@ def generate_problem_data(first_seq, second_seq):
     return result
 
 
+def deletion(seq, pos):
+    """ Deletes a random base pair from a sequence at a specified position.
+    """
+    # TODO: Check.
+    return seq[:pos] + seq[pos:]
+
+
+def base_change(seq, pos):
+    """ Changes a random base pair to another base pair at a specified position.
+    """
+    # TODO: Check.
+    new_base = random.choice("ACTG".replace(seq[pos], ""))
+    return seq[:pos] + new_base + seq[pos:]
+
+
 def content():
-    first_seq = "GCATGCU"
-    second_seq = "GATTACA"
+    first_seq = ''.join(random.choices("ACTG", k=5))
+    second_seq = first_seq
+    mutations = (deletion, base_change)
+    # TODO: Generalize.
+    for i in range(3):
+        pos = random.randrange(len(second_seq))
+        second_seq = random.choice(mutations)(second_seq, pos)
+    if len(second_seq) > len(first_seq):
+        first_seq, second_seq = second_seq, first_seq
     if request.method == 'POST':
         validate(request.data)
     return problems.render_problem('problems/needlemanwunsch.html',
