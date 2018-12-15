@@ -3,12 +3,20 @@
   <table class="table">
     <tbody>
       {% for row in matrix %}
+        {% set outerloop = loop %}
         <tr>
           {% for entry in row %}
-            <td> {{ entry }} </td>
+            <td onclick="updateAnswer()"
+                id="{{ outerloop.index0 }}{{ loop.index0 }}">
+		{{ entry }}
+            </td>
           {% endfor %}
         </tr>
       {% endfor %}
     </tbody>
   </table>
+  <script>
+    function updateAnswer() {
+    }
+  </script>
 {% endblock %}

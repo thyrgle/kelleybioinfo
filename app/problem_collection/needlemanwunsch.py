@@ -12,7 +12,6 @@ def validate(solution):
 
 
 def compute_block(result, i, j, first_seq, second_seq):
-    print("len1: {}, len2: {}".format(len(first_seq), len(second_seq)))
     return max(result[i-1][j-1] + calc_weight(second_seq[i], first_seq[j]),
                result[i-1][j] - 1,
                result[i][j-1] - 1)
@@ -34,7 +33,6 @@ def generate_problem_data(first_seq, second_seq):
         row = [i]
         row.extend([0]*len(first_seq))
         result.append(row)
-    print(result)
     for i in range(1, len(result) - 1):
         for j in range(1, len(result[0])):
             result[i][j] = compute_block(result, i, j,
@@ -74,6 +72,7 @@ def content():
         first_seq, second_seq = second_seq, first_seq
     if request.method == 'POST':
         validate(request.data)
+    # TODO: Automate first parameter!
     return problems.render_problem('problems/needlemanwunsch.html',
                                    matrix=generate_problem_data(first_seq,
                                                                 second_seq),

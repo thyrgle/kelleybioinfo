@@ -15,21 +15,12 @@
     </div>
     <div class="col-6 auth-main">
       <form method="post">
+        {{ form.csrf_token }}
         <div class="form-group">
-          <input name="username"
-	         class="form-control"
-		 id="username"
-		 placeholder="Username"
-                 required>
+          {{ form.username }}
         </div>
         <div class="form-group">
-          <input type="password"
-		 class="form-control"
-                 name="password"
-	         id="password"
-	         placeholder="Password"
-	         required>
-        </div>
+          {{ form.password }}
         <div class="form-group">
           <input class="btn btn-light"
 		 type="submit"

@@ -1,5 +1,9 @@
 import os
 from flask import Flask, render_template
+from flask_wtf.csrf import CSRFProtect
+
+
+csrf = CSRFProtect()
 
 
 def create_app(test_config=None):
@@ -8,6 +12,7 @@ def create_app(test_config=None):
     # TODO Secret key?
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
     app.secret_key = 'dev'
+    csrf.init_app(app)
 
     from . import models
     with app.app_context():

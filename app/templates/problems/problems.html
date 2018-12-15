@@ -21,7 +21,10 @@
     <button type="button" class="btn btn-primary">◀</button>
   </div>
   <div class="col">
-    {% block problem %} {% endblock %}
+    <form method="post" id="problem-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+      {% block problem %} {% endblock %}
+    </form>
   </div>
   <div class="col-2 d-flex align-items-center justify-content-center">
     <button type="button" class="btn btn-primary">▶</button>
@@ -31,7 +34,12 @@
   <div class="col-4">
   </div>
   <div class="col d-flex justify-content-end">
-    <button type="submit" method="get" class="btn btn-primary">Submit</button>
+    <button type="submit"
+	    method="get"
+	    class="btn btn-primary"
+	    form="problem-form">
+	    Submit
+    </button>
     <div class="btn-group btn-group-toggle" data-toggle="buttons">
       <label class="btn btn-secondary active">
         <input type="radio" 

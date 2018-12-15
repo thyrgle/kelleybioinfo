@@ -1,4 +1,3 @@
-import functools
 from flask import (
     Blueprint,
     flash,
@@ -8,6 +7,14 @@ from flask import (
     request,
     session,
     url_for
+)
+from wtforms import (
+    TextField,
+    PasswordField
+)
+from wtforms.validators import DataRequired
+from flask_wtf import (
+    FlaskForm,
 )
 from werkzeug.security import (
     check_password_hash,
@@ -19,13 +26,9 @@ from . import models
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 
-def login_required(view):
-    @functools.wraps(view)
-    def wrapped_view(**kwargs):
-        if g.user is None:
-            return redirect(url_for('auth.login'))
-        return view(**kwargs)
-    return wrapped_view
+class LoginForm(FlaskForm):
+    username = TextField('Username', [DataRequired()])
+    password = PasswordField('Password', [DataRequired()])
 
 
 @bp.before_app_request
@@ -41,35 +44,37 @@ def load_logged_in_user():
 
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
+    form = LoginForm()
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        name = form.username.data
+        password = form.password.data
         error = None
 
-        if not username:
+        if not name:
             error = 'Username is required.'
         elif not password:
             error = 'Password is required.'
-        elif models.User.query.filter_by(username=username).first() is not None:
-            error = 'User {} is already registered.'.format(username)
+        elif models.User.query.filter_by(username=name).first() is not None:
+            error = 'User {} is already registered.'.format(name)
 
         if error is None:
-            models.db.session.add(models.User(username=username,
-                                  password=generate_password_hash(password))
-                          )
+            print("HERE")
+            models.db.session.add(models.User(username=name,
+                                  password=generate_password_hash(password)))
             models.db.session.commit()
             return redirect(url_for('auth.login'))
 
         flash(error)
 
-    return render_template('auth/register.html')
+    return render_template('auth/register.html', form=form)
 
 
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
+    form = LoginForm()
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        username = form.username.data
+        password = form.password.data
         error = None
         user = models.User.query.filter_by(username=username).first()
         if user is None:
@@ -84,7 +89,7 @@ def login():
 
         flash(error)
 
-    return render_template('auth/login.html')
+    return render_template('auth/login.html', form=form)
 
 
 @bp.route('/logout')
