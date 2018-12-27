@@ -58,7 +58,6 @@ def register():
             error = 'User {} is already registered.'.format(name)
 
         if error is None:
-            print("HERE")
             models.db.session.add(models.User(username=name,
                                   password=generate_password_hash(password)))
             models.db.session.commit()

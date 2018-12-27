@@ -1,22 +1,28 @@
 {% extends 'problems/problems.html' %}
 {% block problem %}
-  <table class="table">
-    <tbody>
-      {% for row in matrix %}
-        {% set outerloop = loop %}
-        <tr>
-          {% for entry in row %}
-            <td onclick="updateAnswer()"
-                id="{{ outerloop.index0 }}{{ loop.index0 }}">
-		{{ entry }}
-            </td>
-          {% endfor %}
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-  <script>
-    function updateAnswer() {
-    }
-  </script>
+  <form method="post" id="problem-form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <table class="table">
+      <tbody>
+        {% for row in matrix %}
+	  {% set outer_loop = loop.index0 %}
+          <tr>
+            {% for entry in row %}
+	      <td>
+	        {% if entry != ' ' %}
+		  <input name="hidden-{{ outer_loop }}-{{ loop.index0 }}" 
+	                 value="{{ entry }}"
+		  	 type="hidden" />
+                  <input name="{{ outer_loop }}-{{ loop.index0 }}" type="checkbox"/>
+		  <label for="{{ outer_loop }}-{{ loop.index0 }}">
+                    {{ entry }} 
+		  </label>
+		{% endif %}
+              </td>
+            {% endfor %}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </form>
 {% endblock %}

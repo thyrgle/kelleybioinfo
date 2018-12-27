@@ -80,8 +80,13 @@ def make_safe(func, url):
     Decorator for determining whether the submit problem has not been user ta-
     mpered.
 
-    Paramters:
-    func :  Function used to check the correctness of a solution.
+    Args:
+        func :  Function used to check the correctness of a solution.
+        url : The specific problem URL.
+
+    Returns:
+        A function that validates through the server, and then uses the valid-
+        ation specified in func.
     """
     def validated_func():
         user_id = session.get('user_id')
@@ -98,7 +103,14 @@ def make_safe(func, url):
 
 
 def load_problems():
+    """
+    Loads problems located in the "problem_collection" subdirectory.
+
+    Note: A problem must have a NAME, URL, and CATEGORY value specified these
+    values are then added to the categories global.
+    """
     for f in os.listdir('./app/problem_collection'):
+        # Takes (for exmaple) test.html becomes test
         no_ext = f.rsplit('.', 1)[0]
         spec = importlib.util.spec_from_file_location(no_ext,
                                                       'app/problem_collection/'
