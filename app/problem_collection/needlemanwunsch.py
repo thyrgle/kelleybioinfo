@@ -1,4 +1,5 @@
 import random
+from collections import defaultdict
 from flask import request
 from app import problems
 
@@ -7,8 +8,120 @@ CATEGORY = "RNA"
 URL = "needlemanwunsch.html"
 
 
-def validate(submission):
-    pass
+def parse_submission(submission):
+    """
+    Parses the given submission data and reconstructs the original problem ma-
+    trix and etracts the submission data.
+
+    Args:
+        submission : The data being submitted. It is a list of tuples. Each t-
+        uple is either:
+        ('hidden-x-y', Int) -> A cell in the matrix corresponding to a select-
+        able position.
+        ('hidden-x-y', Char) -> A cell in the matrix corresponding to the str-
+        ings being compared.
+        ('csrf_token', tok) -> CSRF Token used for security purposes.
+        ('submit', 'solution') -> Submission button (not needed, ignore).
+        ('x-y', value) -> Cell selected by the user.
+
+    Returns:
+        A tuple of a reconstructed matrix for the first entry and a list of a-
+        nswers for the second element.
+    """
+    matrix = defaultdict(list)
+    answer = []
+    for token in submission.items():
+        tok_type = token[0].rsplit('-')
+        if tok_type[0] == 'hidden':
+            matrix[int(tok_type[1])].append(int(tok_type[2]))
+        elif tok_type[0] == 'csrf_token' or tok_type[0] == 'submit':
+            pass
+        else:
+            answer.append((int(tok_type[0]), int(tok_type[1])))
+    table = []
+    for token in sorted(matrix.items()):
+        try:
+            table[token[0]].append(token[1])
+        except IndexError:
+            table.append(token[1])
+    return table, answer
+
+
+def next_best(data, cur_index):
+    """
+    Given a valid collection of problem data, find the next best route(s) down
+    the problem matrix.
+    *Note:* There may be multiple best next positions. This is why a list is
+    always returned. There will be possibly more than one valid position.
+
+    Args:
+        data : A *valid* collection of problem data. (Note: This is a 2d list
+        where each "row" consists of either a single number or a tuple. A tup-
+        le indicates that the position was selected.
+        cur_index : The current position in the problem matrix. Represented as
+        a tuple.
+
+    Returns:
+        A (list of) tuple(s) indicating where the next best choice(s) is in the
+        matrix.
+    """
+    # Create a mapping for the "best" index. Consists of the index for:
+    # Top right, and bottom left in that order.
+    # (Omit top left, this will be placed in best and result by default.
+    window = [(cur_index[0] - 1, cur_index[1]),
+              (cur_index[0], cur_index[1] - 1)]
+    # Assign best initially to the top right corner.
+    best = (cur_index[0] - 1, cur_index[1] - 1)
+    result = [best]
+    # Determine the best corner(s).
+    for corner in window:
+        score = data[corner[0]][corner[1]]
+        best_score = data[best[0]][best[1]]
+        if best_score == score:
+            result.append(corner)
+        elif best_score > score:
+            result = []
+            result.append(corner)
+    return result
+
+
+def validate(data):
+    """
+    Validates a correct solution to the Needleman-Wunsch algorithm.
+
+    Args:
+        submission_data : A collection of "submission tokens".
+
+    Returns:
+        A boolean, True if the problem was correctly solved, False otherwise.
+    """
+
+    # Collect problem and answer data, merge into a matrix of the form:
+    # [[Integer | Tuple (Integer | 'selected') ]]
+    problem_data, submission_data = parse_submission(data)
+    for answer in submission_data:
+        row, col = answer[0], answer[1]
+        problem_data[row][col] = (problem_data[row][col], 'selected')
+
+    # Follow downward starting from the bottom right of the matrix and determ-
+    # ine if the submission data was correct.
+    indicies = [(-1, -1)]
+    cells = [problem_data[indicies[0][0]][indicies[0][1]]]
+    while True:
+        # If the cell is a tuple, it was selected, update index and check aga-
+        # in.
+        for cell in cells:
+            if isinstance(cell, tuple):
+                indicies = list(map(lambda x: next_best(problem_data, x),
+                                    indicies))
+                indicies = sum(indicies, [])
+                for index in indicies:
+                    if index[0] < 0 or index[1] < 0:
+                        return True
+                    cells.append(problem_data[index[0]][index[1]])
+        else:
+            return False
+    return problem_data
 
 
 class NeedlemanWunsch:
@@ -88,11 +201,6 @@ class NeedlemanWunsch:
         for i in range(1, len(result)):
             for j in range(1, len(result[0])):
                 result[i][j] = self._compute_block(result, i, j)
-        # Format for prettier printing.
-        for index, letter in enumerate(second_seq):
-            result[index + 1].insert(0, letter)
-        result[0].insert(0, ' ')
-        result.insert(0, list("  " + first_seq))
         return result
 
     def __init__(self, match=1, mismatch=-1, gap=-1):
@@ -160,8 +268,9 @@ def content():
     second_seq = mutate(first_seq)
     data = needleman_wunsch.generate(first_seq, second_seq)
     if request.method == 'POST':
-        print("Form: {}".format(request.form))
         validate(request.form)
+    if len(first_seq) < len(second_seq):
+        first_seq, second_seq = second_seq, first_seq
     # TODO: Automate first parameter!
     return problems.render_problem('problems/needlemanwunsch.html',
                                    matrix=data,

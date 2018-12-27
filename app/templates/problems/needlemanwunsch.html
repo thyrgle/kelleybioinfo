@@ -4,9 +4,16 @@
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
     <table class="table">
       <tbody>
+        <tr>
+          <!-- The '  ' is used for correct table alignment. -->
+          {% for base in ( '  ' + sequences[0]) %}
+	    <td> {{ base }} </td>
+	  {% endfor %}
+        </tr>
         {% for row in matrix %}
 	  {% set outer_loop = loop.index0 %}
           <tr>
+            <td> {{ (' ' + sequences[1])[loop.index0] }} </td>
             {% for entry in row %}
 	      <td>
 	        {% if entry != ' ' %}
