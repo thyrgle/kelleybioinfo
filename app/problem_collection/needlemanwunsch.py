@@ -80,6 +80,8 @@ def next_best(data, cur_index):
         best_score = data[best[0]][best[1]]
         if isinstance(best_score, tuple):
             best_score = best_score[0]
+        if isinstance(score, tuple):
+            score = score[0]
         # TODO FIX THIS PLACE!
         if best_score == score:
             result.append(corner)
@@ -119,7 +121,6 @@ def validate(data):
                 indicies = list(map(lambda x: next_best(problem_data, x),
                                     indicies))
                 indicies = sum(indicies, [])
-                print(indicies)
                 for index in indicies:
                     if index[0] < 0 or index[1] < 0:
                         return True
@@ -271,7 +272,7 @@ def content():
     second_seq = mutate(first_seq)
     data = needleman_wunsch.generate(first_seq, second_seq)
     if request.method == 'POST':
-        validate(request.form)
+        print(validate(request.form))
     if len(first_seq) < len(second_seq):
         first_seq, second_seq = second_seq, first_seq
     # TODO: Automate first parameter!
