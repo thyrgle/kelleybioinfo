@@ -18,8 +18,6 @@ def parse_submission(submission):
         uple is either:
         ('hidden-x-y', Int) -> A cell in the matrix corresponding to a select-
         able position.
-        ('hidden-x-y', Char) -> A cell in the matrix corresponding to the str-
-        ings being compared.
         ('csrf_token', tok) -> CSRF Token used for security purposes.
         ('submit', 'solution') -> Submission button (not needed, ignore).
         ('x-y', value) -> Cell selected by the user.
@@ -32,10 +30,13 @@ def parse_submission(submission):
     answer = []
     for token in submission.items():
         tok_type = token[0].rsplit('-')
+        # ('hidden-x-y', Int) case
         if tok_type[0] == 'hidden':
             matrix[int(tok_type[1])].append(int(tok_type[2]))
+        # ('csrf_token', tok) and ('submit', 'solution') case
         elif tok_type[0] == 'csrf_token' or tok_type[0] == 'submit':
             pass
+        # ('x-y', value) case
         else:
             answer.append((int(tok_type[0]), int(tok_type[1])))
     table = []
@@ -57,7 +58,7 @@ def next_best(data, cur_index):
     Args:
         data : A *valid* collection of problem data. (Note: This is a 2d list
         where each "row" consists of either a single number or a tuple. A tup-
-        le indicates that the position was selected.
+        le indicates that the position was selected.)
         cur_index : The current position in the problem matrix. Represented as
         a tuple.
 
@@ -77,6 +78,9 @@ def next_best(data, cur_index):
     for corner in window:
         score = data[corner[0]][corner[1]]
         best_score = data[best[0]][best[1]]
+        if isinstance(best_score, tuple):
+            best_score = best_score[0]
+        # TODO FIX THIS PLACE!
         if best_score == score:
             result.append(corner)
         elif best_score > score:
@@ -90,7 +94,7 @@ def validate(data):
     Validates a correct solution to the Needleman-Wunsch algorithm.
 
     Args:
-        submission_data : A collection of "submission tokens".
+        data : A collection of "submission tokens".
 
     Returns:
         A boolean, True if the problem was correctly solved, False otherwise.
@@ -115,13 +119,12 @@ def validate(data):
                 indicies = list(map(lambda x: next_best(problem_data, x),
                                     indicies))
                 indicies = sum(indicies, [])
+                print(indicies)
                 for index in indicies:
                     if index[0] < 0 or index[1] < 0:
                         return True
                     cells.append(problem_data[index[0]][index[1]])
-        else:
-            return False
-    return problem_data
+    return False
 
 
 class NeedlemanWunsch:
