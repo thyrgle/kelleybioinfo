@@ -32,7 +32,7 @@ def parse_submission(submission):
         tok_type = token[0].rsplit('-')
         # ('hidden-x-y', Int) case
         if tok_type[0] == 'hidden':
-            matrix[int(tok_type[1])].append(int(tok_type[2]))
+            matrix[int(tok_type[1])].append(int(token[1]))
         # ('csrf_token', tok) and ('submit', 'solution') case
         elif tok_type[0] == 'csrf_token' or tok_type[0] == 'submit':
             pass
@@ -91,6 +91,53 @@ def next_best(data, cur_index):
     return result
 
 
+def indicies(x, data):
+    """
+    Given a list return *all* of the positions where a specified value is fou-
+    nd.
+
+    Args:
+        x : The element to be found
+        data : The data to search.
+
+    Returns:
+        A list of all location where x is found.
+    """
+    indicies = []
+    cur_index = 0
+    while True:
+        try:
+            cur_index = data.index(x, cur_index)
+            indicies.append(cur_index)
+            cur_index += 1
+        except ValueError:
+            return indicies
+    # Should not be needed, but just in case...
+    return indicies
+
+
+def omit_invalid(index, data):
+    """
+    Helper function, attempts to return a value, if it isn't a valid entry, r-
+    eturn nothing.
+
+    Args:
+        index : The attempted index.
+        data : The data to access.
+
+    Returns:
+        Either the data or nothing.
+
+    Notes:
+        `index` is a tuple, and data is a 2D matrix (nested list).
+    """
+    try:
+        check = data[index[0]][index[1]]
+        return check
+    except IndexError:
+        return None
+
+
 def validate(data):
     """
     Validates a correct solution to the Needleman-Wunsch algorithm.
@@ -104,27 +151,46 @@ def validate(data):
 
     # Collect problem and answer data, merge into a matrix of the form:
     # [[Integer | Tuple (Integer | 'selected') ]]
+    # TODO : ERROR IS HERE WITH PARSING OF DATA!
     problem_data, submission_data = parse_submission(data)
+    # TODO Find a better way to do this.
     for answer in submission_data:
         row, col = answer[0], answer[1]
         problem_data[row][col] = (problem_data[row][col], 'selected')
 
-    # Follow downward starting from the bottom right of the matrix and determ-
-    # ine if the submission data was correct.
-    indicies = [(-1, -1)]
-    cells = [problem_data[indicies[0][0]][indicies[0][1]]]
+    # Check to make sure the first part of the problem was correctly selected.
+    if not isinstance(problem_data[-1][-1], tuple):
+        return False
+    index = (-1, -1)
     while True:
-        # If the cell is a tuple, it was selected, update index and check aga-
-        # in.
-        for cell in cells:
-            if isinstance(cell, tuple):
-                indicies = list(map(lambda x: next_best(problem_data, x),
-                                    indicies))
-                indicies = sum(indicies, [])
-                for index in indicies:
-                    if index[0] < 0 or index[1] < 0:
-                        return True
-                    cells.append(problem_data[index[0]][index[1]])
+        # Try to get the neighbors, it is possible for premature IndexError,
+        # in which case, omit the sample.
+        neighbors = []
+        # TODO : Check if correct neighbors to check.
+        for offset in [(-1, -1), (0, -1)]:
+            possible_neighbor = (index[0] + offset[0], index[1] + offset[1])
+            neighbors.append(omit_invalid(possible_neighbor, problem_data))
+        neighbors = list(filter(None, neighbors))
+        for i, neighbor in enumerate(neighbors):
+            if isinstance(neighbor, tuple):
+                pass
+            else:
+                neighbors[i] = neighbor, 'not-selected'
+        # No more neighbors, we must be done and the solution is correct!
+        if not neighbors:
+            return True
+        best = max(neighbors)
+        valid_choices = indicies(best, neighbors)
+        for valid_choice in valid_choices:
+            if neighbors[valid_choice][1] == 'selected':
+                if valid_choice == 0:
+                    index = (index[0] - 1, index[1] - 1)
+                elif valid_choice == 1:
+                    index = (index[0], index[1] - 1)
+                break
+        else:
+            return False
+    # Should never get here, but in a worst case situation!
     return False
 
 
