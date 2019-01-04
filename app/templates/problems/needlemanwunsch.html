@@ -8,25 +8,14 @@
         <tr>
           <!-- The '  ' is used for correct table alignment. -->
           {% for base in ( '  ' + sequences[0]) %}
-	    <td class="cell"> {{ base }} </td>
+	    <td class="cell amino"> {{ base }} </td>
 	  {% endfor %}
         </tr>
         {% for row in matrix %}
 	  {% set outer_loop = loop.index0 %}
           <tr>
-	    <td class="cell">
-	      <table width="100%" height="100%">
-	        <tbody>
-		  <tr>
-		    <td class="subcell"> &nbsp; </td>
-		    <td class="subcell"> &nbsp; </td>
-		  </tr>
-		  <tr>
-		    <td class="subcell"> &nbsp; </td>
-                    <td class="subcell"> {{ (' ' + sequences[1])[loop.index0] }} </td>
-		  </tr>
-	        </tbody>
-	      </table>
+	    <td class="cell amino">
+	      {{ (' ' + sequences[1])[loop.index0] }} </td>
 	    </td>
             {% for entry in row %}
 	      <td class="cell">
