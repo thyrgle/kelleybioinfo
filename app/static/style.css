@@ -137,8 +137,9 @@ a, a:hover, a:active, a:visited {
 }
 
 .cell {
-  width: 40px;
-  height: 40px;
+  min-height: 75px;
+  width: 75px;
+  height: 75px;
 }
 
 .selected-cell {
