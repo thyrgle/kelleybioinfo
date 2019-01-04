@@ -170,4 +170,10 @@ td.cell {
 
 #problem-col {
   padding-top: 10px;
+  padding-left: 60px;
+  padding-right: 60px;
+}
+
+#register-button {
+  color: #222222;
 }
