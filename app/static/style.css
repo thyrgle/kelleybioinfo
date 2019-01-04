@@ -167,3 +167,7 @@ td.cell {
   border-collapse: collapse;
   border: 1px solid #ddd;
 }
+
+#problem-col {
+  padding-top: 10px;
+}

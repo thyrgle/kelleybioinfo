@@ -20,7 +20,7 @@
   <div class="col-2 d-flex align-items-center justify-content-center">
     <button type="button" class="btn btn-primary">◀</button>
   </div>
-  <div class="col">
+  <div class="col" id="problem-col">
     <form method="post" id="problem-form">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
       {% block problem %} {% endblock %}
