@@ -1,35 +1,78 @@
+<!-- TODO: Fix styling -->
 {% extends 'problems/problems.html' %}
 {% block problem %}
   <form method="post" id="problem-form">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-    <table class="table">
+    <table class="matrix">
       <tbody>
         <tr>
           <!-- The '  ' is used for correct table alignment. -->
           {% for base in ( '  ' + sequences[0]) %}
-	    <td> {{ base }} </td>
+	    <td class="cell"> {{ base }} </td>
 	  {% endfor %}
         </tr>
         {% for row in matrix %}
 	  {% set outer_loop = loop.index0 %}
           <tr>
-            <td> {{ (' ' + sequences[1])[loop.index0] }} </td>
+	    <td class="cell">
+	      <table width="100%" height="100%">
+	        <tbody>
+		  <tr>
+		    <td class="subcell"> &nbsp; </td>
+		    <td class="subcell"> &nbsp; </td>
+		  </tr>
+		  <tr>
+		    <td class="subcell"> &nbsp; </td>
+                    <td class="subcell"> {{ (' ' + sequences[1])[loop.index0] }} </td>
+		  </tr>
+	        </tbody>
+	      </table>
+	    </td>
             {% for entry in row %}
-	      <td>
-	        {% if entry != ' ' %}
-		  <input name="hidden-{{ outer_loop }}-{{ loop.index0 }}" 
-	                 value="{{ entry }}"
-		  	 type="hidden" />
-                  <input name="{{ outer_loop }}-{{ loop.index0 }}" type="checkbox"/>
-		  <label for="{{ outer_loop }}-{{ loop.index0 }}">
-                    {{ entry }} 
-		  </label>
-		{% endif %}
-              </td>
-            {% endfor %}
-          </tr>
+	      <td class="cell">
+	        <table width="100%" height="100%">
+                  <tbody>
+	            <tr>
+		      {% if entry.top_left == None %}
+		        <td class="subcell"> &nbsp; </td> 
+		      {% else %}
+                        <td class="subcell"> {{ entry.top_left }} </td>
+		      {% endif %}
+		      {% if entry.top_right == None %}
+			<td class="subcell"> &nbsp; </td>
+		      {% else %}
+                        <td class="subcell"> {{ entry.top_right }} </td>
+		      {% endif %}
+                    </tr>
+	            <tr>
+		      {% if entry.bottom_left == None %}
+		        <td class="subcell"> &nbsp; </td>
+		      {% else %}
+                        <td class="subcell"> {{ entry.bottom_left }} </td>
+		      {% endif %}
+	              <td class="subcell">
+                        <input name="hidden-{{ outer_loop }}-{{ loop.index0 }}" 
+	                       value="{{ entry.main_entry }}"
+		               type="hidden" />
+                        <input name="{{ outer_loop }}-{{ loop.index0 }}" type="hidden"/>
+                        {{ entry.main_entry }} 
+                      </td>
+		    </tr>  
+                  </tbody>
+                </table>
+	      </td>
+	    {% endfor %}
+	  </tr>
         {% endfor %}
       </tbody>
     </table>
   </form>
+  <script>
+    $( ".cell" ).click(function() {
+      $( this ).toggleClass( "selected-cell" );
+    });
+    $( ".selected-cell" ).click(function() {
+      $( this ).toggleClass( "cell" );
+    });
+  </script>
 {% endblock %}

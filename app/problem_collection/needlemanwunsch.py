@@ -1,4 +1,5 @@
 import random
+from collections import namedtuple
 from collections import defaultdict
 from flask import request
 from app import problems
@@ -6,6 +7,9 @@ from app import problems
 NAME = "Needleman-Wunsch Algorithm"
 CATEGORY = "RNA"
 URL = "needlemanwunsch.html"
+
+
+Cell = namedtuple("Cell", "top_left top_right bottom_left main_entry")
 
 
 def parse_submission(submission):
@@ -199,7 +203,9 @@ class NeedlemanWunsch:
     Class used for generating Needleman-Wunsch matrices.
     """
 
-    def _compute_block(self, result, i, j):
+    def _compute_block(self,
+                       top_left, top_right, bottom_left,
+                       i, j):
         """
         Given a block (corresponding to a 2 x 2 matrix), calculate the value o-
         f the bottom right corner.
@@ -207,21 +213,32 @@ class NeedlemanWunsch:
                                M_{i,j} = max(M_{i-1,j-1} + S_{i,j},
                                              M_{i,j-1} + W,
                                              M_{i-1,j} + W)
-         Found here: https://vlab.amrita.edu/?sub=3&brch=274&sim=1431&cnt=1)
+        Found here: https://vlab.amrita.edu/?sub=3&brch=274&sim=1431&cnt=1)
+        All components of the arguments of the max function are also returned.
 
         Args:
-            result : The current matrix that is being computed.
-            i : The right most part of the block being computed.
-            j : The bottom most part of the block being computed.
+            top_left : The cell touching the left corner of the current cell.
+            top_right : The cell directly above the left corner of the current
+            cell.
+            bottom_left : The cell directly to the left of the current cell.
+            i : The current row of the cell being computed.
+            j : The current column of the cell being computed.
 
         Returns:
-            The value for the right bottom corner of a particular block.
+            The values for the right bottom corner of a particular block.
         """
-        return max(result[i-1][j-1] +
-                   self._calc_weight(self._second_seq[i-1],
-                                     self._first_seq[j-1]),
-                   result[i-1][j] + self.gap,
-                   result[i][j-1] + self.gap)
+        top_left_corner = top_left + \
+            self._calc_weight(self._second_seq[i-1],
+                              self._first_seq[j-1])
+        top_right_corner = top_right + self.gap
+        bottom_left_corner = bottom_left + self.gap
+        bottom_right_corner = max(top_left_corner,
+                                  bottom_left_corner,
+                                  top_right_corner)
+        return Cell(top_left=top_left_corner,
+                    top_right=top_right_corner,
+                    bottom_left=bottom_left_corner,
+                    main_entry=bottom_right_corner)
 
     def _calc_weight(self, first_char, second_char):
         """
@@ -262,15 +279,24 @@ class NeedlemanWunsch:
         # Adjust sequence with "intial space"
         # Initialize the resulting matrix with the initial row.
         result = [list(range(0, -len(first_seq) - 1, -1))]
+        result[0] = [Cell(None, None, None, entry) for entry in result[0]]
         # Create initial columns.
         for i in range(-1, -len(second_seq) - 1, -1):
-            row = [i]
-            row.extend([0]*len(first_seq))
+            row = [Cell(None, None, None, i)]
+            # TODO : Check for possible reference confusion.
+            row.extend([Cell(None, None, None, 0)]*len(first_seq))
             result.append(row)
         # Sweep through and compute each new cell row-wise.
         for i in range(1, len(result)):
             for j in range(1, len(result[0])):
-                result[i][j] = self._compute_block(result, i, j)
+                top_left = result[i-1][j-1].main_entry
+                top_right = result[i-1][j].main_entry
+                bottom_left = result[i][j-1].main_entry
+                result[i][j] = self._compute_block(top_left,
+                                                   top_right,
+                                                   bottom_left,
+                                                   i,
+                                                   j)
         return result
 
     def __init__(self, match=1, mismatch=-1, gap=-1):
