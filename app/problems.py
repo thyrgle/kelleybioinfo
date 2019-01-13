@@ -1,3 +1,4 @@
+from enum import Enum
 import importlib
 import json
 import functools
@@ -15,13 +16,26 @@ bp = Blueprint('problems',
                url_prefix='/problems',
                template_folder='templates/')
 
+
+class Category(Enum):
+    ALIGNMENT = 'alignment'
+    PROTEIN = 'protein'
+    RNA = 'rna'
+    PROBABILITY = 'probability'
+    MOTIFS = 'motifs'
+    PHYLOGENY = 'phylogeny'
+
+    def __str__(self):
+        return str(self.value)
+
+
 categories = {
-    'alignment': [],
-    'protein': [],
-    'rna': [],
-    'probability': [],
-    'motifs': [],
-    'phylogeny': [],
+    Category.ALIGNMENT: [],
+    Category.PROTEIN: [],
+    Category.RNA: [],
+    Category.PROBABILITY: [],
+    Category.MOTIFS: [],
+    Category.PHYLOGENY: [],
 }
 
 
@@ -116,7 +130,7 @@ def load_problems():
         categories[module.CATEGORY].append(module.NAME)
         # Create a new rule for the the module and render with the modules' c-
         # ontent function.
-        bp.add_url_rule(module.CATEGORY + '/' + module.URL,
+        bp.add_url_rule(str(module.CATEGORY) + '/' + module.URL,
                         module.URL.rsplit('.', 1)[0],
                         make_safe(module.content, module.URL),
                         methods=('GET', 'POST'))

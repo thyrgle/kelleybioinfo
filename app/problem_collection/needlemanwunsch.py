@@ -6,7 +6,7 @@ from flask import request
 from app import problems
 
 NAME = "Needleman-Wunsch Algorithm"
-CATEGORY = "alignment"
+CATEGORY = problems.Category.ALIGNMENT
 URL = "needlemanwunsch.html"
 
 
