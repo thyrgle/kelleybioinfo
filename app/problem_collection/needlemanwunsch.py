@@ -44,22 +44,30 @@ def parse_submission(submission):
     main_matrix = defaultdict(lambda: defaultdict(Cell))
     answers = []
 
+    # Collection of dispatch functions based on the kind of token being proce-
+    # ssed.
     def add_to_matrix(row, col, data, corner='main_entry'):
+        """ Add to the main entry corner of a cell in main_matrix"""
         nonlocal main_matrix
         setattr(main_matrix[row][col], corner, int(data))
 
+    # Modify the main_entry slightly to incorprate the other corners.
+    add_top_left = functools.partial(add_to_matrix, corner='top_left')
+    add_top_right = functools.partial(add_to_matrix, corner='top_right')
+    add_bottom_left = functools.partial(add_to_matrix, corner='bottom_left')
+
     def answer_submission(row, col, data):
+        """
+        Answer token was encounted, determine if it was chosen and add it
+        to the answers data.
+        """
         nonlocal answers
         if data == 'selected':
             answers.append((int(row), int(col)))
 
     def no_op(row, col, data):
+        """ Handle submit and csrf tokens i.e. don't do anything. """
         return None
-
-    add_top_left = functools.partial(add_to_matrix, corner='top_left')
-    add_top_right = functools.partial(add_to_matrix, corner='top_right')
-    add_bottom_left = functools.partial(add_to_matrix, corner='bottom_left')
-    # For csrf and submit case.
 
     tok_type_dispatch = {
         'csrf_token': no_op,
