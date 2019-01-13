@@ -164,14 +164,7 @@ def validate(data):
     Returns:
         A boolean, True if the problem was correctly solved, False otherwise.
     """
-
-    # Collect problem and answer data, merge into a matrix of the form:
-    # [[Integer | Tuple (Integer | 'selected') ]]
-    # TODO : ERROR IS HERE WITH PARSING OF DATA!
-    problem_data = parse_submission(data)
-    # TODO Find a better way to do this.
-    # Check to make sure the first part of the problem was correctly selected.
-    return traceback(problem_data)
+    return traceback(parse_submission(data))
 
 
 class NeedlemanWunsch:
