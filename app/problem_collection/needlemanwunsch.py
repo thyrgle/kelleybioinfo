@@ -109,14 +109,6 @@ def traceback(problem_data, index=(-1, -1)):
         Boolean indicating whether the path is valid or not.
     """
 
-    def index_to_corner(corner):
-        if corner == 0:
-            return (0, -1)
-        if corner == 1:
-            return (-1, -1)
-        if corner == 2:
-            return (-1, 0)
-
     # Check to see if we have finished the traceback.
     try:
         problem_data[index[0]][index[1]]
@@ -145,7 +137,11 @@ def traceback(problem_data, index=(-1, -1)):
         if corner == best_value:
             best_corners.append(i + 1)
 
-    new_corners = list(map(lambda x: index_to_corner(x), best_corners))
+    # Convert the indicies generated in the above for loop to corner coordina-
+    # tes.
+    index_to_corner = [(0, -1), (-1, -1), (-1, 0)]
+
+    new_corners = list(map(lambda x: index_to_corner[x], best_corners))
     corner_results = list(map(lambda x: traceback(problem_data,
                                                   index=(index[0] + x[0],
                                                          index[1] + x[1])),
