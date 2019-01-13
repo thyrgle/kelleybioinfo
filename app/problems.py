@@ -112,8 +112,10 @@ def load_problems():
                                                       + f)
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
+        # Add the module to categories.
         categories[module.CATEGORY].append(module.NAME)
-        print(module.CATEGORY + '/' + module.URL)
+        # Create a new rule for the the module and render with the modules' c-
+        # ontent function.
         bp.add_url_rule(module.CATEGORY + '/' + module.URL,
                         module.URL.rsplit('.', 1)[0],
                         make_safe(module.content, module.URL),
