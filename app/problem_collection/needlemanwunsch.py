@@ -57,10 +57,12 @@ def parse_submission(submission):
     add_top_left = functools.partial(add_to_matrix, corner='top_left')
     add_top_right = functools.partial(add_to_matrix, corner='top_right')
     add_bottom_left = functools.partial(add_to_matrix, corner='bottom_left')
+    # For csrf and submit case.
+    no_op = lambda row, col, data: None
     
     tok_type_dispatch = {
-        'csrf_token': lambda row, col, data: None,
-        'submit': lambda row, col, data: None,
+        'csrf_token': no_op,
+        'submit': no_op,
         'hidden': add_to_matrix,
         'topleft': add_top_left,
         'topright': add_top_right,
