@@ -70,7 +70,7 @@ def register():
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
     form = LoginForm()
-    if form.validate_on_submit() == 'POST':
+    if form.validate_on_submit():
         username = form.username.data
         password = form.password.data
         error = None
