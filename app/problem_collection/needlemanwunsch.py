@@ -1,7 +1,6 @@
 import random
 import operator
 import functools
-from collections import namedtuple
 from collections import defaultdict
 from flask import request
 from app import problems
@@ -12,16 +11,17 @@ URL = "needlemanwunsch.html"
 
 
 class Cell:
-    def __init__(self, 
-                 bottom_left=None, 
-                 top_left=None, 
-                 top_right=None, 
+    def __init__(self,
+                 bottom_left=None,
+                 top_left=None,
+                 top_right=None,
                  main_entry=None):
         self.bottom_left = bottom_left
         self.top_left = top_left
         self.top_right = top_right
         self.main_entry = main_entry
-    
+
+
 def parse_submission(submission):
     """
     Parses the given submission data and reconstructs the original problem ma-
@@ -43,7 +43,6 @@ def parse_submission(submission):
     # Bottom right corner matrix.
     main_matrix = defaultdict(lambda: defaultdict(Cell))
     answers = []
-    answer = []
 
     def add_to_matrix(row, col, data, corner='main_entry'):
         nonlocal main_matrix
@@ -54,12 +53,14 @@ def parse_submission(submission):
         if data == 'selected':
             answers.append((int(row), int(col)))
 
+    def no_op(row, col, data):
+        return None
+
     add_top_left = functools.partial(add_to_matrix, corner='top_left')
     add_top_right = functools.partial(add_to_matrix, corner='top_right')
     add_bottom_left = functools.partial(add_to_matrix, corner='bottom_left')
     # For csrf and submit case.
-    no_op = lambda row, col, data: None
-    
+
     tok_type_dispatch = {
         'csrf_token': no_op,
         'submit': no_op,
@@ -76,12 +77,12 @@ def parse_submission(submission):
             tok_type_dispatch[tok_type[0]](tok_type[1], tok_type[2], token[1])
         except IndexError:
             pass
-   
-    main_matrix = { row : sorted(list(cols.items())) 
-                    for row, cols in main_matrix.items() }
+
+    main_matrix = {row: sorted(list(cols.items()))
+                   for row, cols in main_matrix.items()}
     main_matrix = sorted(list(main_matrix.items()))
-    main_matrix = [ entry[1] for entry in main_matrix ]
-    main_matrix = [ list(map(lambda x: x[1], row)) for row in main_matrix]
+    main_matrix = [entry[1] for entry in main_matrix]
+    main_matrix = [list(map(lambda x: x[1], row)) for row in main_matrix]
     for ans in answers:
         main_matrix[ans[0]][ans[1]] = (main_matrix[ans[0]][ans[1]],
                                        'selected')
@@ -107,7 +108,7 @@ def traceback(problem_data, index=(-1, -1)):
             return (-1, -1)
         if corner == 2:
             return (-1, 0)
-    
+
     # Check to see if we have finished the traceback.
     try:
         problem_data[index[0]][index[1]]
