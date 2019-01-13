@@ -30,38 +30,32 @@ render_problem = functools.partial(render_template, categories=categories)
 
 @bp.route('/alignment.html')
 def alignment():
-    return render_template('problems/alignment.html',
-                           categories=categories)
+    return render_problem('problems/alignment.html')
 
 
 @bp.route('/protein.html')
 def protein():
-    return render_template('problems/protein.html',
-                           categories=categories)
+    return render_problem('problems/protein.html')
 
 
 @bp.route('/motifs.html')
 def motifs():
-    return render_template('problems/motifs.html',
-                           categories=categories)
+    return render_problem('problems/motifs.html')
 
 
 @bp.route('/rna.html')
 def rna():
-    return render_template('problems/rna.html',
-                           categories=categories)
+    return render_problem('problems/rna.html')
 
 
 @bp.route('/phylogeny.html')
 def phylogeny():
-    return render_template('problems/phylogeny.html',
-                           categories=categories)
+    return render_problem('problems/phylogeny.html')
 
 
 @bp.route('/probability.html')
 def probability():
-    return render_template('problems/probability.html',
-                           categories=categories)
+    return render_problem('problems/probability.html')
 
 
 @bp.route('test.html', methods=('GET',))
@@ -90,8 +84,9 @@ def make_safe(func, url):
     """
     def validated_func():
         user_id = session.get('user_id')
-        existing_problem = models.Problem.query.filter_by(user=user_id,
-                                                          problem_type=url).first()
+        existing_problem = \
+            models.Problem.query.filter_by(user=user_id,
+                                           problem_type=url).first()
         if existing_problem:
             data = json.loads(existing_problem.data)
         else:
