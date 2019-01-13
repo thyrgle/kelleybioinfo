@@ -48,32 +48,23 @@ def parse_submission(submission):
     answers = []
     answer = []
 
-    def add_main_entry(row, col, data):
+    def add_to_matrix(row, col, data, corner='main_entry'):
         nonlocal main_matrix
-        main_matrix[row][col].main_entry = int(data)
-
-    def add_top_left(row, col, data):
-        nonlocal main_matrix
-        main_matrix[row][col].top_left = int(data)
-
-    def add_top_right(row, col, data):
-        nonlocal main_matrix
-        main_matrix[row][col].top_right = int(data)
-
-    def add_bottom_left(row, col, data):
-        nonlocal main_matrix
-        main_matrix[row][col].bottom_left = int(data)
+        setattr(main_matrix[row][col], corner, int(data))
 
     def answer_submission(row, col, data):
         nonlocal answers
-        # Don't do anything with data.
         if data == 'selected':
             answers.append((int(row), int(col)))
 
+    add_top_left = functools.partial(add_to_matrix, corner='top_left')
+    add_top_right = functools.partial(add_to_matrix, corner='top_right')
+    add_bottom_left = functools.partial(add_to_matrix, corner='bottom_left')
+    
     tok_type_dispatch = {
         'csrf_token': lambda row, col, data: None,
         'submit': lambda row, col, data: None,
-        'hidden': add_main_entry,
+        'hidden': add_to_matrix,
         'topleft': add_top_left,
         'topright': add_top_right,
         'bottomleft': add_bottom_left,
