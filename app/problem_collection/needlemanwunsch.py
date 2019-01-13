@@ -7,7 +7,7 @@ from flask import request
 from app import problems
 
 NAME = "Needleman-Wunsch Algorithm"
-CATEGORY = "RNA"
+CATEGORY = "alignment"
 URL = "needlemanwunsch.html"
 
 

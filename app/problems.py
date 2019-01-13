@@ -16,12 +16,12 @@ bp = Blueprint('problems',
                template_folder='templates/')
 
 categories = {
-    'Alignment': [],
-    'Protein': [],
-    'RNA': [],
-    'Probability': [],
-    'Motifs': [],
-    'Phylogeny': [],
+    'alignment': [],
+    'protein': [],
+    'rna': [],
+    'probability': [],
+    'motifs': [],
+    'phylogeny': [],
 }
 
 
