@@ -21,64 +21,37 @@ a, a:hover, a:active, a:visited {
   color: #fff;
 }
 
-#alignment-item {
+.main-screen > div {
   color: #fff;
-  background: #d05353;
   border: 2px;
   margin-left: 20px;
   margin-top: 20px;
   margin-right: 10px;
   margin-bottom: 10px;
+}
+
+#alignment-item {
+  background: #d05353;
 }
 
 #protein-item {
-  color: #fff;
   background: #2d7dd2;
-  border: 2px;
-  margin-left: 10px;
-  margin-top: 20px;
-  margin-right: 10px;
-  margin-bottom: 10px;
 }
 
 #motifs-item {
-  color: #fff;
   background: #7ca704;
-  border: 2px;
-  margin-left: 10px;
-  margin-top: 20px;
-  margin-right: 20px;
-  margin-bottom: 10px;
 }
 
 #rna-item {
-  color: #fff;
   background: #95405a;
-  border: 2px;
-  margin-left: 20px;
-  margin-top: 10px;
-  margin-right: 10px;
-  margin-bottom: 20px;
 }
 
 #phylogeny-item {
-  color: #fff;
   background: #eeb902;
-  border: 2px;
-  margin-left: 10px;
-  margin-top: 10px;
-  margin-right: 10px;
-  margin-bottom: 20px;
 }
 
 #probability-item {
-  color: #fff;
   background: #30343f;
-  border: 2px;
-  margin-left: 10px;
-  margin-top: 10px;
-  margin-right: 20px;
-  margin-bottom: 20px;
 }
 
 .container-fluid {
