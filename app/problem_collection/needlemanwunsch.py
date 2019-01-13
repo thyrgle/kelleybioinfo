@@ -332,7 +332,6 @@ def content():
         print(validate(request.form))
     if len(first_seq) < len(second_seq):
         first_seq, second_seq = second_seq, first_seq
-    # TODO: Automate first parameter!
     return problems.render_problem('problems/needlemanwunsch.html',
                                    matrix=data,
                                    sequences=[first_seq,
