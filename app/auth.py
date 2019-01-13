@@ -4,7 +4,6 @@ from flask import (
     g,
     redirect,
     render_template,
-    request,
     session,
     url_for
 )
@@ -45,7 +44,7 @@ def load_logged_in_user():
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
     form = LoginForm()
-    if request.method == 'POST':
+    if form.validate_on_submit():
         name = form.username.data
         password = form.password.data
         error = None
@@ -71,7 +70,7 @@ def register():
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
     form = LoginForm()
-    if request.method == 'POST':
+    if form.validate_on_submit() == 'POST':
         username = form.username.data
         password = form.password.data
         error = None
