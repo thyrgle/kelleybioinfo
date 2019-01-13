@@ -22,9 +22,6 @@ class Cell:
         self.top_right = top_right
         self.main_entry = main_entry
     
-    def __repr__(self):
-        return 'Cell(' + str(self.bottom_left) + ')'
-
 def parse_submission(submission):
     """
     Parses the given submission data and reconstructs the original problem ma-
@@ -83,11 +80,9 @@ def parse_submission(submission):
     main_matrix = sorted(list(main_matrix.items()))
     main_matrix = [ entry[1] for entry in main_matrix ]
     main_matrix = [ list(map(lambda x: x[1], row)) for row in main_matrix]
-    print(answers)
     for ans in answers:
         main_matrix[ans[0]][ans[1]] = (main_matrix[ans[0]][ans[1]],
                                        'selected')
-    print(main_matrix)
     return main_matrix
 
 
@@ -133,7 +128,6 @@ def traceback(problem_data, index=(-1, -1)):
             except IndexError:
                 best_corners = [2]
             continue
-        print(corner, best_value)
         if corner > best_value:
             best_corners = [i + 1]
             best_value = corner
