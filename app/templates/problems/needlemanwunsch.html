@@ -25,25 +25,45 @@
 		      {% if entry.top_left == None %}
 		        <td class="subcell"> &nbsp; </td> 
 		      {% else %}
-                        <td class="subcell"> {{ entry.top_left }} </td>
+                        <td class="subcell">
+                          <input name="topleft-{{ outer_loop }}-{{ loop.index0 }}"
+			         value="{{ entry.top_left }}"
+				 type="hidden" />
+			  </input>
+			  {{ entry.top_left }}
+			</td>
 		      {% endif %}
 		      {% if entry.top_right == None %}
 			<td class="subcell"> &nbsp; </td>
 		      {% else %}
-                        <td class="subcell"> {{ entry.top_right }} </td>
+                        <td class="subcell">
+			  <input name="topright-{{ outer_loop }}-{{ loop.index0 }}"
+			         value="{{ entry.top_right }}"
+	    			 type="hidden" />
+			  </input>
+			  {{ entry.top_right }}
+			</td>
 		      {% endif %}
                     </tr>
 	            <tr>
 		      {% if entry.bottom_left == None %}
 		        <td class="subcell"> &nbsp; </td>
 		      {% else %}
-                        <td class="subcell"> {{ entry.bottom_left }} </td>
+                        <td class="subcell">
+			  <input name="bottomleft-{{ outer_loop }}-{{ loop.index0 }}"
+			         value="{{ entry.bottom_left }}"
+	    			 type="hidden" />
+			  </input>
+			  {{ entry.bottom_left }}
+			</td>
 		      {% endif %}
 	              <td class="subcell">
                         <input name="hidden-{{ outer_loop }}-{{ loop.index0 }}" 
 	                       value="{{ entry.main_entry }}"
 		               type="hidden" />
-                        <input name="{{ outer_loop }}-{{ loop.index0 }}" type="hidden"/>
+                        <input name="answer-{{ outer_loop }}-{{ loop.index0 }}" 
+			       value="selected-not"
+			       type="hidden" />
                         {{ entry.main_entry }} 
                       </td>
 		    </tr>  
@@ -58,10 +78,17 @@
   </form>
   <script>
     $( ".cell" ).click(function() {
+      // TODO Refactor the if statement?
       $( this ).toggleClass( "selected-cell" );
-    });
-    $( ".selected-cell" ).click(function() {
-      $( this ).toggleClass( "cell" );
+      var answerInput = $( this ).find("input[value|='selected']");
+      console.log(answerInput.val());
+      if (answerInput.val() === 'selected') {
+        answerInput.val('selected-not');
+        console.log("HERE");
+      } else {
+        answerInput.val('selected');
+        console.log("HERE2");
+      }
     });
   </script>
 {% endblock %}

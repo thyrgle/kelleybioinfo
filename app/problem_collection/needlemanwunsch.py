@@ -1,4 +1,6 @@
 import random
+import operator
+import functools
 from collections import namedtuple
 from collections import defaultdict
 from flask import request
@@ -9,8 +11,19 @@ CATEGORY = "RNA"
 URL = "needlemanwunsch.html"
 
 
-Cell = namedtuple("Cell", "top_left top_right bottom_left main_entry")
-
+class Cell:
+    def __init__(self, 
+                 bottom_left=None, 
+                 top_left=None, 
+                 top_right=None, 
+                 main_entry=None):
+        self.bottom_left = bottom_left
+        self.top_left = top_left
+        self.top_right = top_right
+        self.main_entry = main_entry
+    
+    def __repr__(self):
+        return 'Cell(' + str(self.bottom_left) + ')'
 
 def parse_submission(submission):
     """
@@ -30,116 +43,119 @@ def parse_submission(submission):
         A tuple of a reconstructed matrix for the first entry and a list of a-
         nswers for the second element.
     """
-    matrix = defaultdict(list)
+    # Bottom right corner matrix.
+    main_matrix = defaultdict(lambda: defaultdict(Cell))
+    answers = []
     answer = []
+
+    def add_main_entry(row, col, data):
+        nonlocal main_matrix
+        main_matrix[row][col].main_entry = int(data)
+
+    def add_top_left(row, col, data):
+        nonlocal main_matrix
+        main_matrix[row][col].top_left = int(data)
+
+    def add_top_right(row, col, data):
+        nonlocal main_matrix
+        main_matrix[row][col].top_right = int(data)
+
+    def add_bottom_left(row, col, data):
+        nonlocal main_matrix
+        main_matrix[row][col].bottom_left = int(data)
+
+    def answer_submission(row, col, data):
+        nonlocal answers
+        # Don't do anything with data.
+        if data == 'selected':
+            answers.append((int(row), int(col)))
+
+    tok_type_dispatch = {
+        'csrf_token': lambda row, col, data: None,
+        'submit': lambda row, col, data: None,
+        'hidden': add_main_entry,
+        'topleft': add_top_left,
+        'topright': add_top_right,
+        'bottomleft': add_bottom_left,
+        'answer': answer_submission
+    }
+
     for token in submission.items():
         tok_type = token[0].rsplit('-')
-        # ('hidden-x-y', Int) case
-        if tok_type[0] == 'hidden':
-            matrix[int(tok_type[1])].append(int(token[1]))
-        # ('csrf_token', tok) and ('submit', 'solution') case
-        elif tok_type[0] == 'csrf_token' or tok_type[0] == 'submit':
-            pass
-        # ('x-y', value) case
-        else:
-            answer.append((int(tok_type[0]), int(tok_type[1])))
-    table = []
-    for token in sorted(matrix.items()):
         try:
-            table[token[0]].append(token[1])
+            tok_type_dispatch[tok_type[0]](tok_type[1], tok_type[2], token[1])
         except IndexError:
-            table.append(token[1])
-    return table, answer
+            pass
+   
+    main_matrix = { row : sorted(list(cols.items())) 
+                    for row, cols in main_matrix.items() }
+    main_matrix = sorted(list(main_matrix.items()))
+    main_matrix = [ entry[1] for entry in main_matrix ]
+    main_matrix = [ list(map(lambda x: x[1], row)) for row in main_matrix]
+    print(answers)
+    for ans in answers:
+        main_matrix[ans[0]][ans[1]] = (main_matrix[ans[0]][ans[1]],
+                                       'selected')
+    print(main_matrix)
+    return main_matrix
 
 
-def next_best(data, cur_index):
+def traceback(problem_data, index=(-1, -1)):
     """
-    Given a valid collection of problem data, find the next best route(s) down
-    the problem matrix.
-    *Note:* There may be multiple best next positions. This is why a list is
-    always returned. There will be possibly more than one valid position.
+    Checks if the submission data is actually a valid path. Traces back throu-
+    gh the grid to determine this.
 
     Args:
-        data : A *valid* collection of problem data. (Note: This is a 2d list
-        where each "row" consists of either a single number or a tuple. A tup-
-        le indicates that the position was selected.)
-        cur_index : The current position in the problem matrix. Represented as
-        a tuple.
+        problem_data : The grid for the problem.
 
     Returns:
-        A (list of) tuple(s) indicating where the next best choice(s) is in the
-        matrix.
+        Boolean indicating whether the path is valid or not.
     """
-    # Create a mapping for the "best" index. Consists of the index for:
-    # Top right, and bottom left in that order.
-    # (Omit top left, this will be placed in best and result by default.
-    window = [(cur_index[0] - 1, cur_index[1]),
-              (cur_index[0], cur_index[1] - 1)]
-    # Assign best initially to the top right corner.
-    best = (cur_index[0] - 1, cur_index[1] - 1)
-    result = [best]
-    # Determine the best corner(s).
-    for corner in window:
-        score = data[corner[0]][corner[1]]
-        best_score = data[best[0]][best[1]]
-        if isinstance(best_score, tuple):
-            best_score = best_score[0]
-        if isinstance(score, tuple):
-            score = score[0]
-        # TODO FIX THIS PLACE!
-        if best_score == score:
-            result.append(corner)
-        elif best_score > score:
-            result = []
-            result.append(corner)
-    return result
 
-
-def indicies(x, data):
-    """
-    Given a list return *all* of the positions where a specified value is fou-
-    nd.
-
-    Args:
-        x : The element to be found
-        data : The data to search.
-
-    Returns:
-        A list of all location where x is found.
-    """
-    indicies = []
-    cur_index = 0
-    while True:
-        try:
-            cur_index = data.index(x, cur_index)
-            indicies.append(cur_index)
-            cur_index += 1
-        except ValueError:
-            return indicies
-    # Should not be needed, but just in case...
-    return indicies
-
-
-def omit_invalid(index, data):
-    """
-    Helper function, attempts to return a value, if it isn't a valid entry, r-
-    eturn nothing.
-
-    Args:
-        index : The attempted index.
-        data : The data to access.
-
-    Returns:
-        Either the data or nothing.
-
-    Notes:
-        `index` is a tuple, and data is a 2D matrix (nested list).
-    """
+    def index_to_corner(corner):
+        if corner == 0:
+            return (0, -1)
+        if corner == 1:
+            return (-1, -1)
+        if corner == 2:
+            return (-1, 0)
+    
+    # Check to see if we have finished the traceback.
     try:
-        check = data[index[0]][index[1]]
-        return check
+        problem_data[index[0]][index[1]]
     except IndexError:
-        return None
+        return True
+    # This cell wasn't selected, but it should have been.
+    if not isinstance(problem_data[index[0]][index[1]], tuple):
+        return False
+    cell = problem_data[index[0]][index[1]][0]
+    # Get the next best cell(s)
+    best_value = cell.bottom_left
+    best_corners = [0]
+    corners = (cell.top_left, cell.top_right)
+    for i, corner in enumerate(corners):
+        if corner is None:
+            # Check if last col or last row.
+            try:
+                problem_data[index[0]][index[1] - 1]
+                best_corners = [0]
+            except IndexError:
+                best_corners = [2]
+            continue
+        print(corner, best_value)
+        if corner > best_value:
+            best_corners = [i + 1]
+            best_value = corner
+        if corner == best_value:
+            best_corners.append(i + 1)
+
+    new_corners = list(map(lambda x: index_to_corner(x), best_corners))
+    corner_results = list(map(lambda x: traceback(problem_data,
+                                                  index=(index[0] + x[0],
+                                                         index[1] + x[1])),
+                              new_corners))
+    result = functools.reduce(operator.or_, corner_results, False)
+    return result
 
 
 def validate(data):
@@ -156,46 +172,10 @@ def validate(data):
     # Collect problem and answer data, merge into a matrix of the form:
     # [[Integer | Tuple (Integer | 'selected') ]]
     # TODO : ERROR IS HERE WITH PARSING OF DATA!
-    problem_data, submission_data = parse_submission(data)
+    problem_data = parse_submission(data)
     # TODO Find a better way to do this.
-    for answer in submission_data:
-        row, col = answer[0], answer[1]
-        problem_data[row][col] = (problem_data[row][col], 'selected')
-
     # Check to make sure the first part of the problem was correctly selected.
-    if not isinstance(problem_data[-1][-1], tuple):
-        return False
-    index = (-1, -1)
-    while True:
-        # Try to get the neighbors, it is possible for premature IndexError,
-        # in which case, omit the sample.
-        neighbors = []
-        # TODO : Check if correct neighbors to check.
-        for offset in [(-1, -1), (0, -1)]:
-            possible_neighbor = (index[0] + offset[0], index[1] + offset[1])
-            neighbors.append(omit_invalid(possible_neighbor, problem_data))
-        neighbors = list(filter(None, neighbors))
-        for i, neighbor in enumerate(neighbors):
-            if isinstance(neighbor, tuple):
-                pass
-            else:
-                neighbors[i] = neighbor, 'not-selected'
-        # No more neighbors, we must be done and the solution is correct!
-        if not neighbors:
-            return True
-        best = max(neighbors)
-        valid_choices = indicies(best, neighbors)
-        for valid_choice in valid_choices:
-            if neighbors[valid_choice][1] == 'selected':
-                if valid_choice == 0:
-                    index = (index[0] - 1, index[1] - 1)
-                elif valid_choice == 1:
-                    index = (index[0], index[1] - 1)
-                break
-        else:
-            return False
-    # Should never get here, but in a worst case situation!
-    return False
+    return traceback(problem_data)
 
 
 class NeedlemanWunsch:
