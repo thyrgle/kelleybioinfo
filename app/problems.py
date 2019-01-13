@@ -1,6 +1,6 @@
 from enum import Enum
 import importlib
-import json
+# import json
 import functools
 import os
 from flask import (
@@ -83,6 +83,8 @@ def test():
     return render_template('problems/test.html')
 
 
+# TODO : FIX THIS FUNCTION!
+'''
 def make_safe(func, url):
     """
     Decorator for determining whether the submit problem has not been user ta-
@@ -98,17 +100,20 @@ def make_safe(func, url):
     """
     def validated_func():
         user_id = session.get('user_id')
-        existing_problem = \
-            models.Problem.query.filter_by(user=user_id,
-                                           problem_type=url).first()
-        if existing_problem:
-            data = json.loads(existing_problem.data)
-        else:
-            data = func()
-            models.add_problem(data, user_id, url)
+        if user_id is not None:
+            print("HERE")
+            existing_problem = \
+                models.Problem.query.filter_by(user=user_id,
+                                               problem_type=url).first()
+            if existing_problem:
+                data = json.loads(existing_problem.data)
+            else:
+                data = func()
+                models.add_problem(data, user_id, url)
         return data
 
     return validated_func
+'''
 
 
 def load_problems():
@@ -132,5 +137,5 @@ def load_problems():
         # ontent function.
         bp.add_url_rule(str(module.CATEGORY) + '/' + module.URL,
                         module.URL.rsplit('.', 1)[0],
-                        make_safe(module.content, module.URL),
+                        module.content,
                         methods=('GET', 'POST'))

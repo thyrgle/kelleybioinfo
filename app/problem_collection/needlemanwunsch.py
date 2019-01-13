@@ -2,8 +2,9 @@ import random
 import operator
 import functools
 from collections import defaultdict
-from flask import request
+from flask import request, session
 from app import problems
+from app import models
 
 NAME = "Needleman-Wunsch Algorithm"
 CATEGORY = problems.Category.ALIGNMENT
@@ -329,7 +330,12 @@ def content():
     second_seq = mutate(first_seq)
     data = needleman_wunsch.generate(first_seq, second_seq)
     if request.method == 'POST':
-        print(validate(request.form))
+        if validate(request.form) is True:
+            user_id = session.get('user_id')
+            models.db.session.add(models.History(
+                user_id=user_id,
+                value=10))
+            models.db.session.commit()
     if len(first_seq) < len(second_seq):
         first_seq, second_seq = second_seq, first_seq
     return problems.render_problem('problems/needlemanwunsch.html',
