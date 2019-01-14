@@ -9,8 +9,9 @@ from flask import (
 )
 from wtforms import (
     TextField,
-    PasswordField
+    PasswordField,
 )
+from wtforms.fields.html5 import EmailField
 from wtforms.validators import DataRequired
 from flask_wtf import (
     FlaskForm,
@@ -28,6 +29,7 @@ bp = Blueprint('auth', __name__, url_prefix='/auth')
 class LoginForm(FlaskForm):
     username = TextField('Username', [DataRequired()])
     password = PasswordField('Password', [DataRequired()])
+    email = EmailField('Email', [DataRequired()])
 
 
 @bp.before_app_request
@@ -47,6 +49,7 @@ def register():
     if form.validate_on_submit():
         name = form.username.data
         password = form.password.data
+        email = form.email.data
         error = None
 
         if not name:
@@ -58,7 +61,8 @@ def register():
 
         if error is None:
             models.db.session.add(models.User(username=name,
-                                  password=generate_password_hash(password)))
+                                  password=generate_password_hash(password),
+                                  email=email))
             models.db.session.commit()
             return redirect(url_for('auth.login'))
 

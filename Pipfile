@@ -9,6 +9,7 @@ name = "pypi"
 flask = "*"
 flask-sqlalchemy = "*"
 flask-wtf = "*"
+libgravatar = "*"
 
 [requires]
 python_version = "3.6"

@@ -4,6 +4,7 @@ from flask import (
 )
 from . import models
 from sqlalchemy import func
+from libgravatar import Gravatar
 
 
 bp = Blueprint('profile', __name__, url_prefix='/profile')
@@ -16,9 +17,12 @@ def index(user_id):
             func.sum(models.History.value)
         ).filter_by(user_id=user_id).first()[0]
     name = models.User.query.filter_by(user_id=user_id).first()
+    print(name.email)
+    img = Gravatar(name.email).get_image(default='identicon')
     history = models.History.query.filter_by(user_id=user_id)
     history = [item.as_javascript for item in history.all()]
     return render_template('profile/index.html',
-                            total_rep=total_rep,
-                            history=history,
-                            name=name)
+                           total_rep=total_rep,
+                           history=history,
+                           name=name,
+                           profile_image=img)
