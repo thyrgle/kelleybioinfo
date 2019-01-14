@@ -21,6 +21,7 @@ from werkzeug.security import (
     generate_password_hash
 )
 from . import models
+from libgravatar import Gravatar
 
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
@@ -41,6 +42,10 @@ def load_logged_in_user():
         g.user = None
     else:
         g.user = models.User.query.filter_by(user_id=user_id).first()
+        if g.user is not None:
+            gravatar = Gravatar(g.user.email)
+            g.profile_image = gravatar.get_image(default="identicon",
+                                                 size=30)
 
 
 @bp.route('/register', methods=('GET', 'POST'))

@@ -16,8 +16,8 @@ def create_app(test_config=None):
 
     from . import models
     with app.app_context():
-        models.db.init_app(app)
         # TODO Should this be here?
+        models.db.init_app(app)
         models.db.drop_all()
         models.db.create_all()
 

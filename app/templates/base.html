@@ -15,6 +15,9 @@
              {{ g.user['username'] }}
           </a>
         </li>
+	<li class="nav-item">
+	  <img src="{{ g.profile_image }}">
+	</li>
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('auth.logout') }}">Log Out</a>
         </li>
