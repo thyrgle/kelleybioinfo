@@ -14,7 +14,11 @@
 	<img src="{{ profile_image }}" />
       </div>
       <div class="row">
-        {{ total_rep }}
+        {% if total_rep is none %}
+	  0
+	{% else %}
+          {{ total_rep }}
+	{% endif %}
       </div>
     </div>
     <div class="col-9">
