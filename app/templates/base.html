@@ -9,12 +9,6 @@
     <a class="navbar-brand" href="/">Kelley Bio Info</a>
     <ul class="navbar-nav ml-auto">
       {% if g.user %}
-        <li class="nav-item">
-	  <a class="nav-link" 
-             href="{{ url_for('profile.index', user_id=g.user['user_id']) }}">
-             {{ g.user['username'] }}
-          </a>
-        </li>
 	<li class="nav-item">
           <a class="nav-link" 
 	     href=" {{ url_for('profile.index', user_id=g.user['user_id']) }}">
