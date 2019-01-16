@@ -17,7 +17,7 @@ def index(user_id):
             func.sum(models.History.value)
         ).filter_by(user_id=user_id).first()[0]
     name = models.User.query.filter_by(user_id=user_id).first()
-    img = Gravatar(name.email).get_image(default='identicon')
+    img = Gravatar(name.email).get_image(default='identicon', size=200)
     history = models.History.query.filter_by(user_id=user_id)
     history = [item.as_javascript for item in history.all()]
     return render_template('profile/index.html',
