@@ -79,11 +79,6 @@ a, a:hover, a:active, a:visited {
   min-height: 500px;
 }
 
-#myChart {
-  width: 100% !important;
-  height: 300px !important;
-}
-
 #problem-form {
   width: 100% !important;
   height: 100% !important;
