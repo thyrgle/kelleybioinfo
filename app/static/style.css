@@ -134,7 +134,7 @@ a, a:hover, a:active, a:visited {
 }
 
 .selected-cell {
-  background-color: red !important;
+  background-color: #ffed23 !important;
 }
 
 .subcell {
