@@ -1,4 +1,5 @@
 from enum import Enum
+from collections import namedtuple
 import importlib
 import functools
 import os
@@ -8,6 +9,9 @@ from flask import (
     session,
 )
 from . import models
+
+
+Entry = namedtuple('Entry', 'name url')
 
 
 bp = Blueprint('problems',
@@ -131,7 +135,9 @@ def load_problems():
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
         # Add the module to categories.
-        categories[module.CATEGORY].append(module.NAME)
+        url = 'problems.' + module.URL.rsplit('.', 1)[0]
+        categories[module.CATEGORY].append(Entry(name=module.NAME,
+                                                 url=url))
         # Create a new rule for the the module and render with the modules' c-
         # ontent function.
         bp.add_url_rule(str(module.CATEGORY) + '/' + module.URL,

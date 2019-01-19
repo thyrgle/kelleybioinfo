@@ -9,7 +9,7 @@
 	  <ul class="nav flex-column">
 	    {% for problem in categories[category] %}
 	      <li class="nav-item">
-	        {{ problem }}
+		<a href="{{ url_for(problem.url) }}" class="problem-entry"> {{ problem.name }} </a>
 	      </li>
 	     {% endfor %}
 	  </ul>

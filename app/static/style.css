@@ -172,3 +172,7 @@ td.cell {
 .amino {
   text-align: center;
 }
+
+.problem-entry {
+  color: #222 !important;
+}
