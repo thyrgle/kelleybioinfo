@@ -133,6 +133,12 @@ a, a:hover, a:active, a:visited {
   height: 75px;
 }
 
+.constant-cell {
+  min-height: 75px;
+  width: 75px;
+  height: 75px;
+}
+
 .selected-cell {
   background-color: #ffed23 !important;
 }
@@ -155,6 +161,12 @@ table.matrix {
 }
 
 td.cell {
+  border-collapse: collapse;
+  border: 1px solid #ddd;
+}
+
+/* Cell *cannot* be selected. */
+td.constant-cell {
   border-collapse: collapse;
   border: 1px solid #ddd;
 }

@@ -8,13 +8,13 @@
         <tr>
           <!-- The '  ' is used for correct table alignment. -->
           {% for base in ( '  ' + sequences[0]) %}
-	    <td class="cell amino"> {{ base }} </td>
+	    <td class="constant-cell amino"> {{ base }} </td>
 	  {% endfor %}
         </tr>
         {% for row in matrix %}
 	  {% set outer_loop = loop.index0 %}
           <tr>
-	    <td class="cell amino">
+	    <td class="constant-cell amino">
 	      {{ (' ' + sequences[1])[loop.index0] }} </td>
 	    </td>
             {% for entry in row %}
