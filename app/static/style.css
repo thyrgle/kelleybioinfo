@@ -63,49 +63,6 @@ a, a:hover, a:active, a:visited {
   margin-left: 0px !important;
 }
 
-#profile-img {
-  border: 1px solid #ddd;
-}
-
-#profile-top {
-  padding-top: 30px;
-}
-
-#stats-col {
-  padding-right: 30px !important;
-}
-
-#top-stats-row {
-  padding-bottom: 20px;
-}
-
-.stats-item {
-  border: 1px solid #ddd;
-  min-height: 125px;
-  text-align: center;
-}
-
-#stats-area {
-  border-top: 1px solid #ddd;
-  padding-right: 30px;
-}
-
-#spider-plot {
-  background: #95405a; 
-  margin-left: 20px;
-  margin-right: 10px;
-  margin-bottom: 20px;
-  margin-top: 10px;
-}
-
-#detailed-view {
-  background: #7ca704;
-  margin-left: 10px;
-  margin-right: 20px;
-  margin-bottom: 20px;
-  margin-top: 10px;
-}
-
 #login-title {
   color: #fff;
 }

@@ -1,0 +1,37 @@
+#profile-img {
+  border: 1px solid #ddd;
+}
+
+#profile-top {
+  padding-top: 30px;
+}
+
+#stats-col {
+  padding-right: 30px !important;
+}
+
+.stats-item {
+  border: 1px solid #ddd;
+  min-height: 125px !important;
+  text-align: center;
+}
+
+#detailed-view {
+  background: #7ca704;
+  margin-left: 10px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+#spider-plot {
+  background: #95405a; 
+  margin-left: 20px;
+  margin-right: 10px;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+#top-stats-row {
+  padding-bottom: 20px;
+}
