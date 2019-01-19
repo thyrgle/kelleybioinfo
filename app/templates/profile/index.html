@@ -8,12 +8,12 @@
 {% endblock %}
 
 {% block content %}
-  <div class="row">
-    <div class="col" id="display-div">
-      <div class="row justify-content-center" id="profile-img">
-	<img src="{{ profile_image }}" />
+  <div class="row" id="profile-top">
+    <div class="col-sm-4">
+      <div class="row justify-content-center">
+	<img src="{{ profile_image }}" id="profile-img" />
       </div>
-      <div class="row justify-content-center" id="reputation-display">
+      <div class="row justify-content-center">
         {% if total_rep is none %}
 	  0
 	{% else %}
@@ -21,16 +21,34 @@
 	{% endif %}
       </div>
     </div>
-    <div class="col-9">
-      <div id="myChart"></div>
+    <div class="col-sm-8 stats-col">
+      <div class="container">
+        <div class="row" id="top-stats-row">
+          <div class="col stats-item border">
+            Alignment
+	  </div>
+	  <div class="col stats-item border">
+            Protein
+	  </div>
+	  <div class="col stats-item border">
+            Motifs
+          </div>
+	</div>
+        <div class="row">
+	  <div class="col stats-item border">
+            RNA
+	  </div>
+	  <div class="col stats-item border">
+            Phylogeny
+	  </div>
+	  <div class="col stats-item border">
+            Probability
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="row flex-grow-1">
-    <div class="col" id="spider-plot">
-    </div>
-    <div class="col-9" id="detailed-view">
-    </div>
-  </div>
+  <div id="myChart"></div>
 <script>
   MG.data_graphic({
     title: "Reputation",

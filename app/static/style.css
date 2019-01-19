@@ -63,22 +63,31 @@ a, a:hover, a:active, a:visited {
   margin-left: 0px !important;
 }
 
-#display-div {
-  min-height: 300px;
-  background: #d05353;
-  margin-right: 10px;
-  margin-top: 20px;
-  margin-left: 20px;
-  margin-bottom: 10px;
+#profile-img {
+  border: 1px solid #ddd;
+}
+
+#profile-top {
+  padding-top: 30px;
+}
+
+#stats-col {
+  padding-right: 30px !important;
+}
+
+#top-stats-row {
+  padding-bottom: 20px;
+}
+
+.stats-item {
+  border: 1px solid #ddd;
+  min-height: 125px;
   text-align: center;
 }
 
-#profile-img {
-  padding-top: 50px;
-}
-
-#reputation-display {
-  font-size: 24px;
+#stats-area {
+  border-top: 1px solid #ddd;
+  padding-right: 30px;
 }
 
 #spider-plot {
