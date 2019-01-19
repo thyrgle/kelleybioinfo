@@ -127,48 +127,9 @@ a, a:hover, a:active, a:visited {
   height: 300px !important;
 }
 
-.cell {
-  min-height: 75px;
-  width: 75px;
-  height: 75px;
-}
-
-.constant-cell {
-  min-height: 75px;
-  width: 75px;
-  height: 75px;
-}
-
-.selected-cell {
-  background-color: #ffed23 !important;
-}
-
-.subcell {
-  table-layout: fixed;
-  width: 50% !important;
-  height: 50%;
-  text-align: center;
-}
-
 #problem-form {
   width: 100% !important;
   height: 100% !important;
-}
-
-table.matrix {
-  width: 100%;
-  height: 100%;
-}
-
-td.cell {
-  border-collapse: collapse;
-  border: 1px solid #ddd;
-}
-
-/* Cell *cannot* be selected. */
-td.constant-cell {
-  border-collapse: collapse;
-  border: 1px solid #ddd;
 }
 
 #problem-col {
@@ -179,10 +140,6 @@ td.constant-cell {
 
 #register-button {
   color: #222222;
-}
-
-.amino {
-  text-align: center;
 }
 
 .problem-entry {

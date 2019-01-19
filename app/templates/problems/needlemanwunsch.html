@@ -1,5 +1,8 @@
 <!-- TODO: Fix styling -->
 {% extends 'problems/problems.html' %}
+{% block header %}
+<link rel="stylesheet" href={{ url_for('static', filename='needlemanwunsch.css') }}>
+{% endblock header %}
 {% block problem %}
   <form method="post" id="problem-form">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
