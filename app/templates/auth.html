@@ -1,12 +1,14 @@
 {% extends 'base.html' %}
-
+{% block header %}
+<link rel="stylesheet" link="{{ url_for('static', filename='auth.css') }}">
+{% endblock header %}
 {% block content %}
   <div class="row">
     <div class="col-3">
     </div>
     <!-- Refactor CSS! -->
     <div class="col auth-main" id="login-title">
-      {% block auth-header %}
+      {% block auth_header %}{% endblock %}
     </div>
     <div class="col-3">
     </div>
@@ -15,7 +17,7 @@
     <div class="col-3">
     </div>
     <div class="col-6 auth-main">
-      {% block auth-forms %}
+      {% block auth_forms %}{% endblock %}
     </div>
     <div class="col-3">
     </div>

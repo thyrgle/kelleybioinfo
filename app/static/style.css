@@ -63,18 +63,6 @@ a, a:hover, a:active, a:visited {
   margin-left: 0px !important;
 }
 
-#login-title {
-  color: #fff;
-}
-
-#login-title-div {
-  margin-top: 20px;
-}
-
-.auth-main {
-  background: #2d7dd2;
-}
-
 #problem-row {
   min-height: 500px;
 }
