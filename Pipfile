@@ -10,6 +10,7 @@ flask = "*"
 flask-sqlalchemy = "*"
 flask-wtf = "*"
 libgravatar = "*"
+sphinx = "*"
 
 [requires]
 python_version = "3.6"
