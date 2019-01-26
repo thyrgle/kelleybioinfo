@@ -332,10 +332,11 @@ def content():
     if request.method == 'POST':
         if validate(request.form) is True:
             user_id = session.get('user_id')
-            models.db.session.add(models.History(
-                user_id=user_id,
-                value=10))
-            models.db.session.commit()
+            if user_id is not None:
+                models.db.session.add(models.History(
+                    user_id=user_id,
+                    value=10))
+                models.db.session.commit()
     if len(first_seq) < len(second_seq):
         first_seq, second_seq = second_seq, first_seq
     return problems.render_problem('problems/needlemanwunsch.html',
