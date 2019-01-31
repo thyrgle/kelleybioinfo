@@ -81,8 +81,7 @@ $(function() {
       type: "POST",
       data: { level: $(this).attr("name") },
       success: function(response) {
-	console.log(response);
-        //document.write(response);
+        $('#problem-col').html(response);
       },
     });
   });
