@@ -1,97 +1,9 @@
 <!-- TODO: Fix styling -->
+{% import 'problems/_matrix.html' as mat %}
 {% extends 'problems/problems.html' %}
 {% block header %}
 <link rel="stylesheet" href={{ url_for('static', filename='needlemanwunsch.css') }}>
 {% endblock header %}
 {% block problem %}
-  <form method="post" id="problem-form">
-    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-    <table class="matrix">
-      <tbody>
-        <tr>
-          <!-- The '  ' is used for correct table alignment. -->
-          {% for base in ( '  ' + sequences[0]) %}
-	    <td class="constant-cell amino"> {{ base }} </td>
-	  {% endfor %}
-        </tr>
-        {% for row in matrix %}
-	  {% set outer_loop = loop.index0 %}
-          <tr>
-	    <td class="constant-cell amino">
-	      {{ (' ' + sequences[1])[loop.index0] }} </td>
-	    </td>
-            {% for entry in row %}
-	      <td class="cell">
-	        <table width="100%" height="100%">
-                  <tbody>
-	            <tr>
-		      {% if entry.top_left == None %}
-		        <td class="subcell"> &nbsp; </td> 
-		      {% else %}
-                        <td class="subcell">
-                          <input name="topleft-{{ outer_loop }}-{{ loop.index0 }}"
-			         value="{{ entry.top_left }}"
-				 type="hidden" />
-			  </input>
-			  {{ entry.top_left }}
-			</td>
-		      {% endif %}
-		      {% if entry.top_right == None %}
-			<td class="subcell"> &nbsp; </td>
-		      {% else %}
-                        <td class="subcell">
-			  <input name="topright-{{ outer_loop }}-{{ loop.index0 }}"
-			         value="{{ entry.top_right }}"
-	    			 type="hidden" />
-			  </input>
-			  {{ entry.top_right }}
-			</td>
-		      {% endif %}
-                    </tr>
-	            <tr>
-		      {% if entry.bottom_left == None %}
-		        <td class="subcell"> &nbsp; </td>
-		      {% else %}
-                        <td class="subcell">
-			  <input name="bottomleft-{{ outer_loop }}-{{ loop.index0 }}"
-			         value="{{ entry.bottom_left }}"
-	    			 type="hidden" />
-			  </input>
-			  {{ entry.bottom_left }}
-			</td>
-		      {% endif %}
-	              <td class="subcell">
-                        <input name="hidden-{{ outer_loop }}-{{ loop.index0 }}" 
-	                       value="{{ entry.main_entry }}"
-		               type="hidden" />
-                        <input name="answer-{{ outer_loop }}-{{ loop.index0 }}" 
-			       value="selected-not"
-			       type="hidden" />
-                        {{ entry.main_entry }} 
-                      </td>
-		    </tr>  
-                  </tbody>
-                </table>
-	      </td>
-	    {% endfor %}
-	  </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </form>
-  <script>
-    $( ".cell" ).click(function() {
-      // TODO Refactor the if statement?
-      $( this ).toggleClass( "selected-cell" );
-      var answerInput = $( this ).find("input[value|='selected']");
-      console.log(answerInput.val());
-      if (answerInput.val() === 'selected') {
-        answerInput.val('selected-not');
-        console.log("HERE");
-      } else {
-        answerInput.val('selected');
-        console.log("HERE2");
-      }
-    });
-  </script>
+  {{ mat.render_matrix(matrix, sequences) }}
 {% endblock %}

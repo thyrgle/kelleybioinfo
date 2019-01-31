@@ -143,4 +143,5 @@ def load_problems():
         bp.add_url_rule(str(module.CATEGORY) + '/' + module.URL,
                         module.URL.rsplit('.', 1)[0],
                         module.content,
-                        methods=('GET', 'POST'))
+                        methods=('GET', 'POST'),
+                        defaults={'level': 1})

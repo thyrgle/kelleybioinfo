@@ -2,7 +2,7 @@ import random
 import operator
 import functools
 from collections import defaultdict
-from flask import request, session
+from flask import request, session, get_template_attribute
 from app import problems
 from app import models
 
@@ -109,7 +109,6 @@ def traceback(problem_data, index=(-1, -1)):
     Returns:
         Boolean indicating whether the path is valid or not.
     """
-
     # Check to see if we have finished the traceback.
     try:
         problem_data[index[0]][index[1]]
@@ -161,7 +160,10 @@ def validate(data):
     Returns:
         A boolean, True if the problem was correctly solved, False otherwise.
     """
-    return traceback(parse_submission(data))
+    try:
+        return traceback(parse_submission(data))
+    except KeyError:
+        return False
 
 
 class NeedlemanWunsch:
@@ -324,22 +326,50 @@ def mutate(seq, rounds=3):
     return seq
 
 
-def content():
+def create_problem(level):
+    """
+    Generates a problem given a corresponding level.
+
+    Args:
+        level : Either 1, 2 or 3. Indicates the difficulty of a particular pr-
+        oblem.
+
+    Returns:
+        A tuple where the first entry is the matrix, the second component is t-
+        he "first" (longest) sequence, and the second is the "second" (shortes-
+        t) sequence.
+    """
     needleman_wunsch = NeedlemanWunsch()
-    first_seq = ''.join(random.choices("ACTG", k=5))
+    first_seq = ''.join(random.choices("ACTG", k=level+2))
     second_seq = mutate(first_seq)
     data = needleman_wunsch.generate(first_seq, second_seq)
+    if len(first_seq) < len(second_seq):
+        first_seq, second_seq = second_seq, first_seq
+    return (data, first_seq, second_seq)
+
+
+def content(level):
     if request.method == 'POST':
-        if validate(request.form) is True:
+        level_changed = request.form.get('level', False)
+        if level_changed:
+            level = int(level_changed)
+            problem = create_problem(level)
+            problem_section = get_template_attribute(
+                'problems/_matrix.html',
+                'render_matrix'
+            )
+            return problem_section(problem[0],
+                                   [problem[1],
+                                    problem[2]])
+        elif validate(request.form) is True:
             user_id = session.get('user_id')
             if user_id is not None:
                 models.db.session.add(models.History(
                     user_id=user_id,
                     value=10))
                 models.db.session.commit()
-    if len(first_seq) < len(second_seq):
-        first_seq, second_seq = second_seq, first_seq
+    problem = create_problem(level)
     return problems.render_problem('problems/needlemanwunsch.html',
-                                   matrix=data,
-                                   sequences=[first_seq,
-                                              second_seq])
+                                   matrix=problem[0],
+                                   sequences=[problem[1],
+                                              problem[2]])
