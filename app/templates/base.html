@@ -12,7 +12,7 @@
 	<li class="nav-item">
           <a class="nav-link" 
 	     href=" {{ url_for('profile.index', user_id=g.user['user_id']) }}">
-	    <img src="{{ g.profile_image }}">
+	  <img src="{{ g.profile_image }}" alt="{{ g.user['username'] }}">
 	  </a>
 	</li>
         <li class="nav-item">
