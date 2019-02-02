@@ -1,9 +1,14 @@
-<!-- TODO: Fix styling -->
 {% import 'problems/_matrix.html' as mat %}
 {% extends 'problems/problems.html' %}
+
+{% block title %}
+Needleman-Wunsch Algorithm
+{% endblock %}
+
 {% block header %}
 <link rel="stylesheet" href={{ url_for('static', filename='needlemanwunsch.css') }}>
 {% endblock header %}
+
 {% block problem %}
   {{ mat.render_matrix(matrix, sequences) }}
 {% endblock %}
