@@ -6,18 +6,12 @@ Log In
 
 {% block content %}
   <div class="row">
-    <div class="col-3">
-    </div>
-    <div class="col auth-main" id="login-title-div">
+    <div class="col-6 offset-md-3 auth-main" id="login-title-div">
       <h1 id="login-title"> Log In </h1>
-    </div>
-    <div class="col-3">
     </div>
   </div>
   <div class="row">
-    <div class="col-3">
-    </div>
-    <div class="col-6 auth-main">
+    <div class="col-6 offset-md-3 auth-main">
       <form method="post">
         {{ form.csrf_token }}
         <div class="form-group">
@@ -35,8 +29,6 @@ Log In
                  value="Log In">
         </div>
       </form>
-    </div>
-    <div class="col-3">
     </div>
   </div>
 {% endblock %}
