@@ -4,7 +4,6 @@ from flask_wtf.csrf import CSRFProtect
 
 
 def create_app(test_config=None):
-    # TODO Avoid global
     app = Flask(__name__, instance_relative_config=True)
     csrf = CSRFProtect()
     # TODO Secret key?
