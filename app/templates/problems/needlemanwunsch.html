@@ -12,3 +12,7 @@ Needleman-Wunsch Algorithm
 {% block problem %}
   {{ mat.render_matrix(matrix, sequences) }}
 {% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='matrix.js') }}"></script>
+{% endblock %}
