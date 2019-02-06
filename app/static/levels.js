@@ -1,3 +1,6 @@
+/**
+ * Change a problem when a new level is selected.
+ */
 $(function() {
   $('.btn-group').on('change', 'input[type=radio]', function() {
     $.ajax({

@@ -1,3 +1,7 @@
+/**
+ * Deals with selection of a cell in a matrix. In particular, toggles the cell
+ * between yellow and clear.
+ */
 $( ".cell" ).click(function() {
     // TODO Refactor the if statement?
     $( this ).toggleClass( "selected-cell" );
