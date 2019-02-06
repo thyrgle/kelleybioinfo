@@ -21,12 +21,12 @@ bp = Blueprint('problems',
 
 
 class Category(Enum):
-    ALIGNMENT = 'alignment'
-    PROTEIN = 'protein'
-    RNA = 'rna'
-    PROBABILITY = 'probability'
-    MOTIFS = 'motifs'
-    PHYLOGENY = 'phylogeny'
+    ALIGNMENT = 'Alignment'
+    PROTEIN = 'Protein'
+    RNA = 'RNA'
+    PROBABILITY = 'Probability'
+    MOTIFS = 'Motifs'
+    PHYLOGENY = 'Phylogeny'
 
     def __str__(self):
         return str(self.value)
@@ -107,7 +107,7 @@ def load_problems():
                                                  url=url))
         # Create a new rule for the the module and render with the modules' c-
         # ontent function.
-        bp.add_url_rule(str(module.CATEGORY) + '/' + module.URL,
+        bp.add_url_rule(str(module.CATEGORY).lower() + '/' + module.URL,
                         module.URL.rsplit('.', 1)[0],
                         module.content,
                         methods=('GET', 'POST'),
