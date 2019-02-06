@@ -86,39 +86,6 @@ def test():
     return render_template('problems/test.html')
 
 
-# TODO : FIX THIS FUNCTION!
-'''
-def make_safe(func, url):
-    """
-    Decorator for determining whether the submit problem has not been user ta-
-    mpered.
-
-    Args:
-        func :  Function used to check the correctness of a solution.
-        url : The specific problem URL.
-
-    Returns:
-        A function that validates through the server, and then uses the valid-
-        ation specified in func.
-    """
-    def validated_func():
-        user_id = session.get('user_id')
-        if user_id is not None:
-            print("HERE")
-            existing_problem = \
-                models.Problem.query.filter_by(user=user_id,
-                                               problem_type=url).first()
-            if existing_problem:
-                data = json.loads(existing_problem.data)
-            else:
-                data = func()
-                models.add_problem(data, user_id, url)
-        return data
-
-    return validated_func
-'''
-
-
 def load_problems():
     """
     Loads problems located in the "problem_collection" subdirectory.
