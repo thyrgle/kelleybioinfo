@@ -5,7 +5,7 @@ User: {{ g.user['username'] }}
 {% endblock %}
 
 {% block header %}
-<link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
 {% endblock %}
 
 {% block scripts %}
@@ -15,14 +15,19 @@ User: {{ g.user['username'] }}
   <div class="row" id="profile-top">
     <div class="col-sm-4">
       <div class="row justify-content-center">
-	<img src="{{ profile_image }}" id="profile-img" />
-      </div>
-      <div class="row justify-content-center">
-        {% if total_rep is none %}
-	  0
-	{% else %}
-          {{ total_rep }}
-	{% endif %}
+        <div class="card" style="width: 14rem;">
+          <img src="{{ profile_image }}" />
+          <div class="card-body">
+            <h5 class="card-title">
+              Reputation: 
+              {% if total_rep is none %} 
+                0
+              {% else %}
+                {{ total_rep }}
+              {% endif %}
+            </h5>
+	  </div>
+      	</div>
       </div>
     </div>
     <div class="col-sm-8 stats-col">
