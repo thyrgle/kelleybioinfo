@@ -9,10 +9,6 @@ User: {{ g.user['username'] }}
 {% endblock %}
 
 {% block scripts %}
-<script src='https://d3js.org/d3.v5.min.js' charset='utf-8'></script>
- <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
-<link rel="stysheet" href="https://cdnjs.cloudflare.com/ajax/libs/metrics-graphics/2.15.6/metricsgraphics.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/metrics-graphics/2.15.6/metricsgraphics.min.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -56,22 +52,4 @@ User: {{ g.user['username'] }}
       </div>
     </div>
   </div>
-  <div id="myChart"></div>
-<script>
-  MG.data_graphic({
-    title: "Reputation",
-    description: "This graphic shows a time-series of downloads.",
-    data: [{% for item in history %}
-	      { 'date': new Date({{ item.time_stamp }}),
-                'value' : {{ item.value }},
-              },
-           {% endfor %}
-          ],
-    width: 600,
-    height: 250,
-    target: '#myChart',
-    x_accessor: 'date',
-    y_accessor: 'value',
-  })
-</script>
 {% endblock %}
