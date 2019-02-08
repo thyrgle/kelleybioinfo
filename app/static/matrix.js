@@ -4,7 +4,6 @@
  */
 $(function() {
   $(document.body).on('click', '.cell', function() {
-    console.log("HERE");
     // TODO Refactor the if statement?
     $( this ).toggleClass( "selected-cell" );
     var answerInput = $( this ).find("input[value|='selected']");
