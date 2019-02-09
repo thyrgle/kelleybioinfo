@@ -46,32 +46,12 @@ render_problem = functools.partial(render_template, categories=categories)
 
 
 @bp.route('/alignment.html')
-def alignment():
-    return render_problem('problems/default.html')
-
-
 @bp.route('/protein.html')
-def protein():
-    return render_problem('problems/default.html')
-
-
 @bp.route('/motifs.html')
-def motifs():
-    return render_problem('problems/default.html')
-
-
 @bp.route('/rna.html')
-def rna():
-    return render_problem('problems/default.html')
-
-
 @bp.route('/phylogeny.html')
-def phylogeny():
-    return render_problem('problems/default.html')
-
-
 @bp.route('/probability.html')
-def probability():
+def default():
     return render_problem('problems/default.html')
 
 
