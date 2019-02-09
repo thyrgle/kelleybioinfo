@@ -24,3 +24,12 @@
   </div>
 </div>
 {% endblock %}
+
+{% block scripts %}
+  {% if not g.user %}
+    <script src="{{ url_for('static', filename='newcommer.js') }}"></script>
+    <script>
+      showNewUserAlert("{{ url_for('auth.register') }}", "{{ url_for('auth.login') }}");
+    </script>
+  {% endif %}
+{% endblock %}
