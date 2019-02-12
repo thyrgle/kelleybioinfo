@@ -361,7 +361,7 @@ def content(level):
                     models.db.session.commit()
                 return "success"
             else:
-                return "failure"
+                return "error"
         problem = create_problem(level)
         problem_section = get_template_attribute(
             'problems/_matrix.html',
