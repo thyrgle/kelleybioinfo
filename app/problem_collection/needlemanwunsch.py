@@ -2,9 +2,8 @@ import random
 import operator
 import functools
 from collections import defaultdict
-from flask import request, session, get_template_attribute
-from app import problems
-from app import models
+from flask import get_template_attribute, request, session
+from app import problems, models
 
 NAME = "Needleman-Wunsch Algorithm"
 CATEGORY = problems.Category.ALIGNMENT
@@ -162,8 +161,8 @@ def validate(data):
     """
     try:
         return traceback(parse_submission(data))
-    except KeyError:
-        return False
+    except:
+        return "ERROR"
 
 
 class NeedlemanWunsch:
@@ -349,27 +348,26 @@ def create_problem(level):
 
 
 def content(level):
-    if request.method == 'POST':
-        level_changed = request.form.get('level', False)
-        if level_changed:
-            level = int(level_changed)
-            problem = create_problem(level)
-            problem_section = get_template_attribute(
-                'problems/_matrix.html',
-                'render_matrix'
-            )
-            return problem_section(problem[0],
-                                   [problem[1],
-                                    problem[2]])
-        elif validate(request.form) is True:
-            user_id = session.get('user_id')
-            if user_id is not None:
-                models.db.session.add(models.History(
-                    user_id=user_id,
-                    value=10))
-                models.db.session.commit()
-    problem = create_problem(level)
-    return problems.render_problem('problems/needlemanwunsch.html',
-                                   matrix=problem[0],
-                                   sequences=[problem[1],
-                                              problem[2]])
+    if request.method == "POST":
+        if validate(request.form) != "ERROR":
+            print(validate(request.form))
+            if validate(request.form) is True:
+                print("HEREERER")
+                user_id = session.get('user_id')
+                if user_id is not None:
+                    models.db.session.add(models.History(
+                        user_id=user_id,
+                        value=10))
+                    models.db.session.commit()
+                return "success"
+            else:
+                return "failure"
+        problem = create_problem(level)
+        problem_section = get_template_attribute(
+            'problems/_matrix.html',
+            'render_matrix'
+        )
+        return problem_section(problem[0],
+                               [problem[1],
+                                problem[2]])
+    return problems.render_problem('problems/needlemanwunsch.html')

@@ -7,6 +7,8 @@ from flask import (
     Blueprint,
     render_template,
     session,
+    request,
+    get_template_attribute
 )
 from . import models
 

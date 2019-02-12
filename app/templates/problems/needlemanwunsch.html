@@ -9,11 +9,9 @@ Needleman-Wunsch Algorithm
 <link rel="stylesheet" href={{ url_for('static', filename='needlemanwunsch.css') }}>
 {% endblock header %}
 
-{% block problem %}
-  {{ mat.render_matrix(matrix, sequences) }}
-{% endblock %}
-
 {% block scripts %}
   <script src="{{ url_for('static', filename='matrix.js') }}"></script>
+  <script src="{{ url_for('static', filename='loadproblem.js') }}"></script>
   <script src="{{ url_for('static', filename='levels.js') }}"></script>
+  <script src="{{ url_for('static', filename='problemsubmit.js') }}"></script>
 {% endblock %}
