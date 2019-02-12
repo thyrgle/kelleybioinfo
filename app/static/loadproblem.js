@@ -8,7 +8,6 @@ $(function(level = 1) {
     type: 'POST',
     data: { level: level },
     success: function(response) {
-      console.log("HERE")
       $('#problem-col').html(response);
     },
   });
