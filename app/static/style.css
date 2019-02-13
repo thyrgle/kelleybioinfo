@@ -8,17 +8,20 @@ body {
   width: 100%;
 }
 
-a, a:hover, a:active, a:visited {
-  color: #fff;
-  text-decoration: none;
-}
-
 .nav-link {
   color: #fff;
 }
 
 .navbar-brand {
   color: #fff;
+}
+
+a.main-item,
+a:hover.main-item,
+a:active.main-item,
+a:visited.main-item {
+  color: #fff;
+  text-decoration: none;
 }
 
 .main-screen > div {
