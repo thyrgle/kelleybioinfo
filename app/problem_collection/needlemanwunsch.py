@@ -2,8 +2,8 @@ import random
 import operator
 import functools
 from collections import defaultdict
-from flask import get_template_attribute, request, session
-from app import problems, models
+from flask import get_template_attribute
+from app import problems
 
 NAME = "Needleman-Wunsch Algorithm"
 CATEGORY = problems.Category.ALIGNMENT
@@ -348,26 +348,11 @@ def create_problem(level):
 
 
 def content(level):
-    if request.method == "POST":
-        if validate(request.form) != "ERROR":
-            print(validate(request.form))
-            if validate(request.form) is True:
-                user_id = session.get('user_id')
-                if user_id is not None:
-                    models.db.session.add(models.History(
-                        user_id=user_id,
-                        category="Alignment",
-                        value=10))
-                    models.db.session.commit()
-                return "success"
-            else:
-                return "error"
-        problem = create_problem(level)
-        problem_section = get_template_attribute(
-            'problems/_matrix.html',
-            'render_matrix'
-        )
-        return problem_section(problem[0],
-                               [problem[1],
-                                problem[2]])
-    return problems.render_problem('problems/needlemanwunsch.html')
+    problem = create_problem(level)
+    problem_section = get_template_attribute(
+        'problems/_matrix.html',
+        'render_matrix'
+    )
+    return problem_section(problem[0],
+                           [problem[1],
+                            problem[2]])

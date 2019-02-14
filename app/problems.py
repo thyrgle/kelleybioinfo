@@ -7,6 +7,7 @@ from flask import (
     Blueprint,
     render_template,
     session,
+    request,
 )
 from . import models
 
@@ -66,6 +67,39 @@ def test():
     return render_template('problems/test.html')
 
 
+def manage_content(content, validate, module_html):
+    """
+    Decorator for managing level loading for a route.
+
+    Args:
+        content : The content to be rendered.
+        validate : The method for validating a problem.
+        level : The level of the problem to be rendered.
+        module_html : The name of the html template for the problem.
+    Returns:
+        A modified function that handles level changes automatically, so the p-
+        roblem implementer does not need to worry about it.
+    """
+    def managed_route(level):
+        if request.method == 'POST':
+            if validate(request.form) != "ERROR":
+                if validate(request.form) is True:
+                    user_id = session.get('user_id')
+                    if user_id is not None:
+                        # Refactor for multiple levels...
+                        models.db.session.add(models.History(
+                            user_id=user_id,
+                            category="Alignment",
+                            value=10))
+                        models.db.session.commit()
+                    return "success"
+                else:
+                    return "error"
+            return content(level)
+        return render_problem(module_html)
+    return managed_route
+
+
 def load_problems():
     """
     Loads problems located in the "problem_collection" subdirectory.
@@ -89,6 +123,8 @@ def load_problems():
         # ontent function.
         bp.add_url_rule(str(module.CATEGORY).lower() + '/' + module.URL,
                         module.URL.rsplit('.', 1)[0],
-                        module.content,
+                        manage_content(module.content,
+                                       module.validate,
+                                       'problems/' + module.URL),
                         methods=('GET', 'POST'),
                         defaults={'level': 1})
