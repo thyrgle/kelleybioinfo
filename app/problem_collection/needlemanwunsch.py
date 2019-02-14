@@ -352,11 +352,11 @@ def content(level):
         if validate(request.form) != "ERROR":
             print(validate(request.form))
             if validate(request.form) is True:
-                print("HEREERER")
                 user_id = session.get('user_id')
                 if user_id is not None:
                     models.db.session.add(models.History(
                         user_id=user_id,
+                        category="Alignment",
                         value=10))
                     models.db.session.commit()
                 return "success"
