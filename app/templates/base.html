@@ -1,55 +1,55 @@
 <!doctype html>
 <html>
-<title>{% block title %}{% endblock %}</title>
-<head>
-  {% block header %}{% endblock %}
-  {{ bootstrap.load_css() }}
-</head>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-<body class="container-fluid d-flex flex-column">
-  <nav class="navbar navbar-expand-lg navbar-inverse bg-dark">
-    <a class="navbar-brand" href="/">Kelley Bio Info</a>
-    <ul class="navbar-nav ml-auto">
-      {% if g.user %}
-	<li class="nav-item">
-          <a class="nav-link" 
-	     href=" {{ url_for('profile.index', user_id=g.user['user_id']) }}">
-	  <img src="{{ g.profile_image }}" alt="{{ g.user['username'] }}">
-	  </a>
-	</li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('auth.logout') }}">Log Out</a>
-        </li>
-      {% else %}
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('auth.login') }}">Log In</a>
-        </li>
-        <li class="nav-item">
-          <a class="btn btn-light" 
-	     id="register-button" 
-	     href="{{ url_for('auth.register') }}">Register</a>
-        </li>
-      {% endif %}
-    </ul>
-  </nav>
-  {% for message in get_flashed_messages() %}
-    <div class="flash">{{ message }}</div>
-  {% endfor %}
-  {% block content %}{% endblock %}
-  {{ bootstrap.load_js() }}
-  <script>
-    var csrf_token = "{{ csrf_token() }}";
+  <title>{% block title %}{% endblock %}</title>
+  <head>
+    {% block header %}{% endblock %}
+    {{ bootstrap.load_css() }}
+  </head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <body class="container-fluid d-flex flex-column">
+    <nav class="navbar navbar-expand-lg navbar-inverse bg-dark">
+      <a class="navbar-brand" href="/">Kelley Bio Info</a>
+      <ul class="navbar-nav ml-auto">
+        {% if g.user %}
+	  <li class="nav-item">
+            <a class="nav-link" 
+	       href=" {{ url_for('profile.index', user_id=g.user['user_id']) }}">
+	    <img src="{{ g.profile_image }}" alt="{{ g.user['username'] }}">
+	    </a>
+	  </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('auth.logout') }}">Log Out</a>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('auth.login') }}">Log In</a>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-light" 
+	       id="register-button" 
+	       href="{{ url_for('auth.register') }}">Register</a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% for message in get_flashed_messages() %}
+      <div class="flash">{{ message }}</div>
+    {% endfor %}
+    {% block content %}{% endblock %}
+    {{ bootstrap.load_js() }}
+    <script>
+      var csrf_token = "{{ csrf_token() }}";
 
-    $.ajaxSetup({
+      $.ajaxSetup({
         beforeSend: function(xhr, settings) {
-            if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
-                xhr.setRequestHeader("X-CSRFToken", csrf_token);
-            }
+          if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrf_token);
+          }
         }
-    });
-  </script>
-  <!-- For better alert messages, utilize SweetAlert2 -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-  {% block scripts %}{% endblock %}
-</body>
+      });
+    </script>
+    <!-- For better alert messages, utilize SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+    {% block scripts %}{% endblock %}
+  </body>
 </html>
