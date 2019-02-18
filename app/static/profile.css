@@ -31,3 +31,7 @@
 #top-stats-row {
   padding-bottom: 20px;
 }
+
+#chart-row {
+  min-height: 300px;
+}

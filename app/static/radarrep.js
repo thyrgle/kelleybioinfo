@@ -16,7 +16,7 @@ function generateProfileRadar(alignment_rep,
       }]
     },
     options: {
-      responsive: false
+      maintainAspectRatio: false,
     }
   });
 };
