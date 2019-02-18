@@ -54,7 +54,7 @@ a:visited.main-item {
 }
 
 #probability-item {
-  background: #30343f;
+  background: url(dice.svg) no-repeat center #30343f;
 }
 
 .container-fluid {
