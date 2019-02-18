@@ -45,53 +45,29 @@ User: {{ g.user['username'] }}
         <div class="row" id="top-stats-row">
           <div class="col stats-item border">
             <h4>Alignment</h4>
-	    {% if alignment_rep is none %}
-	      <h5> 0 </h5>
-            {% else %}
-	      <h5>{{ alignment_rep }}</h5>
-	    {% endif %}
+            <h5>{{ alignment_rep }}</h5>
 	  </div>
 	  <div class="col stats-item border">
             <h4>Protein</h4>
-	    {% if protein_rep is none %}
-	      <h5> 0 </h5>
-            {% else %}
-	      <h5>{{ protein_rep }}</h5>
-	    {% endif %}
+	    <h5>{{ protein_rep }}</h5>
 	  </div>
 	  <div class="col stats-item border">
             <h4>Motifs</h4>
-	    {% if motifs_rep is none %}
-	      <h5> 0 </h5>
-            {% else %}
-	      <h5>{{ motifs_rep }}</h5>
-	    {% endif %}
+	    <h5>{{ motifs_rep }}</h5>
           </div>
 	</div>
         <div class="row">
 	  <div class="col stats-item border">
             <h4>RNA</h4>
-	    {% if rna_rep is none %}
-	      <h5> 0 </h5>
-            {% else %}
-	      <h5>{{ rna_rep }}</h5>
-	    {% endif %}
+	    <h5>{{ rna_rep }}</h5>
 	  </div>
 	  <div class="col stats-item border">
             <h4>Phylogeny</h4>
-	    {% if phylogeny_rep is none %}
-	      <h5> 0 </h5>
-            {% else %}
-	      <h5>{{ phylogeny_rep }}</h5>
-	    {% endif %}
+	    <h5>{{ phylogeny_rep }}</h5>
 	  </div>
 	  <div class="col stats-item border">
             <h4>Probability</h4> 
-	    {% if probability_rep is none %}
-	      <h5> 0 </h5>
-            {% else %}
-	      <h5>{{ probability_rep }}</h5>
-	    {% endif %}
+	    <h5>{{ probability_rep }}</h5>
           </div>
         </div>
 	<div class="row">
