@@ -11,9 +11,13 @@ bp = Blueprint('profile', __name__, url_prefix='/profile')
 
 
 def get_category_points(user_id, category):
-    return models.History.query.with_entities(
+    result = models.History.query.with_entities(
         func.sum(models.History.value)
     ).filter_by(user_id=user_id, category=category).first()[0]
+    if result is None:
+        return 0
+    else:
+        return result
 
 
 @bp.route('/<int:user_id>', methods=('GET', 'POST'))

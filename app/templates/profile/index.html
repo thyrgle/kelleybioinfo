@@ -9,6 +9,16 @@ User: {{ g.user['username'] }}
 {% endblock %}
 
 {% block scripts %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.min.js"></script>
+  <script src="{{ url_for('static', filename='radarrep.js') }}"></script>
+  <script>
+	  generateProfileRadar({{ alignment_rep }}, 
+                               {{ protein_rep }},
+		               {{ motifs_rep }},
+                               {{ rna_rep }},
+		  	       {{ phylogeny_rep }},
+		               {{ probability_rep }});
+  </script>
 {% endblock %}
 
 {% block content %}
@@ -51,10 +61,10 @@ User: {{ g.user['username'] }}
 	  </div>
 	  <div class="col stats-item border">
             <h4>Motifs</h4>
-	    {% if protein_rep is none %}
+	    {% if motifs_rep is none %}
 	      <h5> 0 </h5>
             {% else %}
-	      <h5>{{ protein_rep }}</h5>
+	      <h5>{{ motifs_rep }}</h5>
 	    {% endif %}
           </div>
 	</div>
@@ -84,6 +94,9 @@ User: {{ g.user['username'] }}
 	    {% endif %}
           </div>
         </div>
+	<div class="row">
+          <canvas id="my-chart" width="600" height="600"></canvas>
+	</div>
       </div>
     </div>
   </div>
