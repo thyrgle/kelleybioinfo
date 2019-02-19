@@ -38,7 +38,7 @@ a:visited.main-item {
 }
 
 #protein-item {
-  background: #2d7dd2;
+  background: url(protein.svg) no-repeat center #2d7dd2;
 }
 
 #motifs-item {
@@ -50,7 +50,7 @@ a:visited.main-item {
 }
 
 #phylogeny-item {
-  background: #eeb902;
+  background: url(phylogeny.svg) no-repeat center #eeb902;
 }
 
 #probability-item {
