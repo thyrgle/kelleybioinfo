@@ -46,7 +46,7 @@ a:visited.main-item {
 }
 
 #rna-item {
-  background: #95405a;
+  background: url(rna.svg) no-repeat center #95405a;
 }
 
 #phylogeny-item {
