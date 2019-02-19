@@ -42,7 +42,7 @@ a:visited.main-item {
 }
 
 #motifs-item {
-  background: #7ca704;
+  background: url(motifs.svg) no-repeat center #7ca704;
 }
 
 #rna-item {
