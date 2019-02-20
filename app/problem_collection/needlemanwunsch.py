@@ -82,8 +82,8 @@ def parse_submission(submission):
     tok_type_dispatch = {
         'csrf_token': no_op,
         'submit': no_op,
-        'hor': assign_hor,
-        'vert': assign_vert,
+        'hor_align': assign_hor,
+        'vert_align': assign_vert,
         'hidden': add_to_matrix,
         'topleft': add_top_left,
         'topright': add_top_right,
@@ -106,6 +106,7 @@ def parse_submission(submission):
     for ans in answers:
         main_matrix[ans[0]][ans[1]] = (main_matrix[ans[0]][ans[1]],
                                        'selected')
+    print(main_matrix)
     return main_matrix
 
 
