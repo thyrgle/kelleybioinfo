@@ -47,16 +47,11 @@ class History(db.Model):
     user_id = db.Column(db.Integer, nullable=False)
     category = db.Column(db.String(15), nullable=False)
     value = db.Column(db.Integer)
-    # TODO Check approrpriate stirng size.
-    time_stamp = db.Column(db.DateTime(timezone=True),
-                           server_default=func.now(),
-                           nullable=False)
 
     def __repr__(self):
-        return '<%r awarded to %r at %r' % (
+        return '<%r awarded to %r' % (
                 self.value,
-                self.user_id,
-                self.time_stamp)
+                self.user_id)
 
 
 class Problem(db.Model):
