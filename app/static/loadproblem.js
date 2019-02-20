@@ -22,6 +22,7 @@ $(function () {
   // Load on problem submission.
   $('#problem-submit').click(function(e) {
     e.preventDefault();
+    console.log(message);
     $.ajax({
       type: 'POST',
       data: $('#problem-form').serialize(),

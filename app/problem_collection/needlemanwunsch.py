@@ -35,6 +35,8 @@ def parse_submission(submission):
         ('csrf_token', tok) -> CSRF Token used for security purposes.
         ('submit', 'solution') -> Submission button (not needed, ignore).
         ('x-y', value) -> Cell selected by the user.
+        ('*-align', string) -> Either hor | vert for horizontal alignment or
+        vertical alignment text input field.
 
     Returns:
         A tuple of a reconstructed matrix for the first entry and a list of a-
@@ -69,9 +71,19 @@ def parse_submission(submission):
         """ Handle submit and csrf tokens i.e. don't do anything. """
         return None
 
+    def assign_hor():
+        # TODO
+        return None
+
+    def assign_vert():
+        # TODO
+        return None
+
     tok_type_dispatch = {
         'csrf_token': no_op,
         'submit': no_op,
+        'hor': assign_hor,
+        'vert': assign_vert,
         'hidden': add_to_matrix,
         'topleft': add_top_left,
         'topright': add_top_right,
@@ -159,10 +171,10 @@ def validate(data):
     Returns:
         A boolean, True if the problem was correctly solved, False otherwise.
     """
-    print(data)
     try:
         return traceback(parse_submission(data))
-    except:
+    except Exception as e:
+        print(e)
         return "ERROR"
 
 

@@ -82,8 +82,10 @@ def manage_content(content, validate, module_html):
     """
     def managed_route(level):
         if request.method == 'POST':
-            if validate(request.form) != "ERROR":
-                if validate(request.form) is True:
+            result = validate(request.form)
+            print(result)
+            if result != "ERROR":
+                if result is True:
                     user_id = session.get('user_id')
                     if user_id is not None:
                         # Refactor for multiple levels...
