@@ -159,6 +159,7 @@ def validate(data):
     Returns:
         A boolean, True if the problem was correctly solved, False otherwise.
     """
+    print(data)
     try:
         return traceback(parse_submission(data))
     except:
