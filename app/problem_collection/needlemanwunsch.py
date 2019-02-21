@@ -40,7 +40,7 @@ def parse_submission(submission):
 
     Returns:
         A tuple of a reconstructed matrix for the first entry and a list of a-
-        nswers for the second element.
+        nswers for the second element. The type is [[(Cell, {selected})]]
     """
     # Bottom right corner matrix.
     main_matrix = defaultdict(lambda: defaultdict(Cell))
