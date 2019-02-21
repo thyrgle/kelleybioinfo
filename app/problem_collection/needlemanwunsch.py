@@ -57,6 +57,8 @@ def parse_submission(submission):
     add_top_left = functools.partial(add_to_matrix, corner='top_left')
     add_top_right = functools.partial(add_to_matrix, corner='top_right')
     add_bottom_left = functools.partial(add_to_matrix, corner='bottom_left')
+    vert_align = None
+    hor_align = None
 
     def answer_submission(row, col, data):
         """
@@ -71,13 +73,13 @@ def parse_submission(submission):
         """ Handle submit and csrf tokens i.e. don't do anything. """
         return None
 
-    def assign_hor():
-        # TODO
-        return None
+    def assign_hor(data):
+        print(data)
+        hor_align = data
 
-    def assign_vert():
-        # TODO
-        return None
+    def assign_vert(data):
+        print(data)
+        vert_align = data
 
     tok_type_dispatch = {
         'csrf_token': no_op,
@@ -103,10 +105,10 @@ def parse_submission(submission):
     main_matrix = sorted(list(main_matrix.items()))
     main_matrix = [entry[1] for entry in main_matrix]
     main_matrix = [list(map(lambda x: x[1], row)) for row in main_matrix]
+    # Create a data type consisting of [[(Cell, {'selected'})]]
     for ans in answers:
         main_matrix[ans[0]][ans[1]] = (main_matrix[ans[0]][ans[1]],
                                        'selected')
-    print(main_matrix)
     return main_matrix
 
 
@@ -154,6 +156,7 @@ def traceback(problem_data, index=(-1, -1)):
     index_to_corner = [(0, -1), (-1, -1), (-1, 0)]
 
     new_corners = list(map(lambda x: index_to_corner[x], best_corners))
+    print(new_corners)
     corner_results = list(map(lambda x: traceback(problem_data,
                                                   index=(index[0] + x[0],
                                                          index[1] + x[1])),
